@@ -17,7 +17,8 @@ var gridArray = [];
 var whereAreYou = true;
 var here;
 
-var jsonToReproduce = {}
+var jsonInstructions = {}
+jsonInstructions.layers = []
 
 function setup() {
   createCanvas(1000,1000);
@@ -27,8 +28,7 @@ function setup() {
   // seed
   
   var date = new Date();
-  var seed = round(date.getTime() / 1000);
-  //seed = 1698898371;
+  var seed = round(date.getTime());
   randomSeed(seed);
   noiseSeed(seed);
   console.log("seed - "+seed);
@@ -51,20 +51,24 @@ function setup() {
   strokeWidth = random(4,7.5);
   console.log("strokeWidth - "+strokeWidth);
   
-  backgroundColor = 90;
+  backgroundColor = "rgba(248,248,248,1)";
   var blueBackground = random(0,1);
   var orangeBackground = random(0,1);
+  var greenBackground = random(0,1);
   if (blueBackground > .9) { backgroundColor = "HSB(230,50%,100%)"; }
   else if (orangeBackground > .9) { backgroundColor = "HSB(32,50%,100%)"; }
+  else if (greenBackground > .9) { backgroundColor = "HSB(151,50%,100%)"; }
   
   backgroundColorLighter = "rgba(248,248,248,1)";
   if (blueBackground > .9) { backgroundColorLighter = "HSB(230,50%,100%)"; }
   else if (orangeBackground > .9) { backgroundColorLighter = "HSB(32,50%,100%)"; }
+  else if (greenBackground > .9) { backgroundColorLighter = "HSB(151,50%,100%)"; }
   console.log("backgroundColor - "+backgroundColor);
   
   strokeColor = 0;
   if (blueBackground > .9) { strokeColor = 255; }
   else if (orangeBackground > .9) { strokeColor = 255; }
+  else if (greenBackground > .9) { strokeColor = 255; }
   console.log("strokeColor - "+strokeColor);
   
   // signature
@@ -140,6 +144,10 @@ function keyTyped() {
   if (key === 'j') {
     console.log('here cell - '+here);
     console.log(gridArray);
+  }
+  
+  if (key === 'i') {
+    saveJSON(jsonInstructions, 'instructions.json');
   }
   
 }
@@ -275,6 +283,12 @@ function drawLayer() {
     thisColor.setAlpha(thisAlpha);
     noFill();
   }
+  
+  
+  // instructions
+  jsonInstructions.layers.push(currentLayer);
+  
+  
   
 }
 
