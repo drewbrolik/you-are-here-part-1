@@ -94,6 +94,16 @@ function setup() {
   shapePoint4x = random(0,1),shapePoint4y = random(0,1),
   shapePoint5x = random(0,1),shapePoint5y = random(0,1);
   
+  jsonInstructions.shape = [
+    {"x":0,"y":0},
+    {"x":shapePoint1x,"y":shapePoint1y},
+    {"x":shapePoint2x,"y":shapePoint2y},
+    {"x":shapePoint3x,"y":shapePoint3y},
+    {"x":shapePoint4x,"y":shapePoint4y},
+    {"x":shapePoint5x,"y":shapePoint5y},
+    {"x":1,"y":1}
+  ]
+  
   // background
   background(backgroundColor);
   var bgCenter = createGraphics(1000,1000);
@@ -153,6 +163,9 @@ function keyTyped() {
 }
 
 function drawLayer() {
+  
+  var layerInstructions = {}
+  layerInstructions.layer = currentLayer;
   
   // univeral offset for this layer
   var
@@ -286,7 +299,7 @@ function drawLayer() {
   
   
   // instructions
-  jsonInstructions.layers.push(currentLayer);
+  jsonInstructions.layers.push(layerInstructions);
   
   
   
