@@ -166,6 +166,7 @@ function drawLayer() {
   
   var layerInstructions = {}
   layerInstructions.layer = currentLayer;
+  layerInstructions.rows = [];
   
   // univeral offset for this layer
   var
@@ -191,6 +192,11 @@ function drawLayer() {
     } else {
       gridLoopX++;
     }
+    
+    // instructions
+    var rowInstructions = {}
+    rowInstructions.row = gridLoopY;
+    rowInstructions.column = gridLoopX;
 
     // you are here color
     var forcePrint = false;
@@ -295,6 +301,9 @@ function drawLayer() {
     stroke(thisColor);
     thisColor.setAlpha(thisAlpha);
     noFill();
+    
+    layerInstructions.rows.push(rowInstructions);
+    
   }
   
   
