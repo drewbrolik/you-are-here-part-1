@@ -160,6 +160,10 @@ function keyTyped() {
     saveJSON(jsonInstructions, 'instructions.json');
   }
   
+  if (key === 's') {
+    save('you-are-here.svg');
+  }
+  
 }
 
 function drawLayer() {
@@ -376,9 +380,15 @@ function hereColorBlock(hereColor) {
   if (random(0,1) > .6) {
     rect(0,0,random(10,width*.5),height);
   } else if (random(0,1) > .2) {
-    rect(random(0,width),0,random(width*.25,width*.5),height);
+  //  rect(random(0,width),0,random(width*.25,width*.5),height);
+    for (var hcbi = 0; hcbi<random(width*.25,width*.5); hcbi++) {
+      if (random(0,1) >.5) {
+        line(hcbi,0,hcbi,height);
+      }
+    }
   } else {
-    ellipse(width*.5,height*.5,width-120,height-120);
+    var ellipseSize = random(60,120);
+    ellipse(width*.5,height*.5,width-ellipseSize,height-ellipseSize);
   }
 }
 
