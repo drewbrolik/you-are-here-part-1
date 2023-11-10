@@ -419,9 +419,12 @@ function hereColorBlock(hereColor) {
   } else if (hereColorBlockType > .5) { // lines
     
     //rect(random(0,width),0,random(width*.25,width*.5),height);
-    for (var hcbi = 0; hcbi<random(width*.25,width*.5); hcbi++) {
+    var hcbs = random(0,width*.5);
+    var hcbw = random(width*.25,width*.5);
+    for (var hcbi = hcbs; hcbi<hcbw; hcbi++) {
       if (random(0,1) >.5) {
-        line(hcbi,0,hcbi,height);
+        //line(hcbi,0,hcbi,height);
+        rect(hcbi,0,1,height);
       }
     }
   
