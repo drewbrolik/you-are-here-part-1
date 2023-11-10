@@ -118,7 +118,9 @@ function setup() {
   
   this.focus(); // focus so key listener works right away
   
-
+  var hereColorBlockRandom = random(0,1);
+  if (hereColorBlockRandom > .5) { hereColorBlock(hereColor); }
+  
 }
 function draw() {
   
