@@ -29,6 +29,8 @@ function setup() {
   
   var date = new Date();
   var seed = round(date.getTime());
+  seed = floor(random(100000));
+  //seed = 1699650982011;
   randomSeed(seed);
   noiseSeed(seed);
   console.log("seed - "+seed);
@@ -86,6 +88,7 @@ function setup() {
   for (var i = 0; i < grid*grid; i++) {
     gridArray[i] = random(0,1);
   }
+  console.log(gridArray);
   
   // create shape
   shapePoint1x = random(0,1),shapePoint1y = random(0,1),
@@ -161,7 +164,7 @@ function keyTyped() {
   }
   
   if (key === 's') {
-    save('you-are-here.svg');
+    save('you-are-here.png');
   }
   
 }
@@ -226,10 +229,12 @@ function drawLayer() {
     var printThisLayer = random(0,1);
     if (forcePrint || currentLayer < 2 || printThisLayer > .9) { // print or skip
       
+      //console.log(currentLayer + " - "+gridLoop+" = "+gridArray[gridLoop]+" - x:"+gridLoopX+" - y:"+gridLoopY);
       if (gridArray[gridLoop] > .9) { // CIRCLE
         
         ellipse((width/(grid+1)*gridLoopX)+offsetX,(height/(grid+1)*gridLoopY)+offsetY,width/(grid+1)*.6,width/(grid+1)*.6);
-      
+        console.log("CIRCLE - layer - "+currentLayer+", cell - "+gridLoopX+","+gridLoopY+", cellStartX - "+cellStartX);
+        
       } else if (gridArray[gridLoop] > .25) { // LINE
       
         var
@@ -272,14 +277,16 @@ function drawLayer() {
           cellEndX = centerCellX+(cellSize*.5),
           cellStartY = centerCellY-(cellSize*.5),
           cellEndY = centerCellY+(cellSize*.5);
-        
+                
+        console.log("SHAPE - layer - "+currentLayer+", cell - "+gridLoopX+","+gridLoopY+", cellStartX - "+cellStartX+", cellStartY - "+cellStartY);
         drawShape(cellStartX,cellEndX,cellStartY,cellEndY,hereCell,thisColor,hereColorColor);
 
       }
       strokeWeight(strokeWidth);
       
     }
-
+    strokeCap(ROUND);
+    
     // splatter
     /*if (random(0,1) > .96) {
       var offsetWidth = random(-width,width);
@@ -338,10 +345,22 @@ function drawShape(startX,endX,startY,endY,hereCell=false,thisColor,hereColor) {
     shapePoint4yy = startY+shapePoint4y*(endY-startY),
     shapePoint5xx = startX+shapePoint5x*(endX-startX),
     shapePoint5yy = startY+shapePoint5y*(endY-startY);
+  
+  var
+    shapePoint1xx_inverted = startX+shapePoint1y*(endX-startX),
+    shapePoint1yy_inverted = startY+shapePoint1x*(endY-startY),
+    shapePoint2xx_inverted = startX+shapePoint2y*(endX-startX),
+    shapePoint2yy_inverted = startY+shapePoint2x*(endY-startY),
+    shapePoint3xx_inverted = startX+shapePoint3y*(endX-startX),
+    shapePoint3yy_inverted = startY+shapePoint3x*(endY-startY),
+    shapePoint4xx_inverted = startX+shapePoint4y*(endX-startX),
+    shapePoint4yy_inverted = startY+shapePoint4x*(endY-startY),
+    shapePoint5xx_inverted = startX+shapePoint5y*(endX-startX),
+    shapePoint5yy_inverted = startY+shapePoint5x*(endY-startY);
 
   if (hereCell) { var colorLine = Math.floor(random(1,7)); }
   var inverted = random(0,1);
-  if (inverted > .5) {
+  if (inverted > .1) {
     if (hereCell && colorLine === 1) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
     line(startX,startY,shapePoint1xx,shapePoint1yy);
     if (hereCell && colorLine === 2) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
@@ -354,12 +373,13 @@ function drawShape(startX,endX,startY,endY,hereCell=false,thisColor,hereColor) {
     line(shapePoint4xx,shapePoint4yy,shapePoint5xx,shapePoint5yy);
     if (hereCell && colorLine === 6) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
     line(shapePoint5xx,shapePoint5yy,endX,endY);
-  } else {
-    if (hereCell && colorLine === 1) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
+  }/* else {
+    thisColor1 = "blue";
+    if (hereCell && colorLine === 1) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor1);strokeWeight(strokeWidth);strokeCap(ROUND); }
     line(startY,startX,shapePoint1yy,shapePoint1xx);
-    if (hereCell && colorLine === 2) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
+    if (hereCell && colorLine === 2) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor1);strokeWeight(strokeWidth);strokeCap(ROUND); }
     line(shapePoint1yy,shapePoint1xx,shapePoint2yy,shapePoint2xx);
-    if (hereCell && colorLine === 3) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
+    if (hereCell && colorLine === 3) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor1);strokeWeight(strokeWidth);strokeCap(ROUND); }
     line(shapePoint2yy,shapePoint2xx,shapePoint3yy,shapePoint3xx);
     if (hereCell && colorLine === 4) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
     line(shapePoint3yy,shapePoint3xx,shapePoint4yy,shapePoint4xx);
@@ -367,7 +387,23 @@ function drawShape(startX,endX,startY,endY,hereCell=false,thisColor,hereColor) {
     line(shapePoint4yy,shapePoint4xx,shapePoint5yy,shapePoint5xx);
     if (hereCell && colorLine === 6) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
     line(shapePoint5yy,shapePoint5xx,endY,endX);
+  }*/
+  else {
+    if (hereCell && colorLine === 1) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
+    line(startX,startY,shapePoint1xx_inverted,shapePoint1yy_inverted);
+    if (hereCell && colorLine === 2) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
+    line(shapePoint1xx_inverted,shapePoint1yy_inverted,shapePoint2xx_inverted,shapePoint2yy_inverted);
+    if (hereCell && colorLine === 3) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
+    line(shapePoint2xx_inverted,shapePoint2yy_inverted,shapePoint3xx_inverted,shapePoint3yy_inverted);
+    if (hereCell && colorLine === 4) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
+    line(shapePoint3xx_inverted,shapePoint3yy_inverted,shapePoint4xx_inverted,shapePoint4yy_inverted);
+    if (hereCell && colorLine === 5) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
+    line(shapePoint4xx_inverted,shapePoint4yy_inverted,shapePoint5xx_inverted,shapePoint5yy_inverted);
+    if (hereCell && colorLine === 6) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
+    line(shapePoint5xx_inverted,shapePoint5yy_inverted,endX,endY);
   }
+  
+  console.log(inverted);
 }
 
 // here color block
@@ -387,7 +423,7 @@ function hereColorBlock(hereColor) {
       }
     }
   } else {
-    var ellipseSize = random(60,120);
+    var ellipseSize = random(120,420);
     ellipse(width*.5,height*.5,width-ellipseSize,height-ellipseSize);
   }
 }
