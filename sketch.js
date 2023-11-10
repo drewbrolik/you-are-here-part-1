@@ -88,7 +88,6 @@ function setup() {
   for (var i = 0; i < grid*grid; i++) {
     gridArray[i] = random(0,1);
   }
-  console.log(gridArray);
   
   // create shape
   shapePoint1x = random(0,1),shapePoint1y = random(0,1),
@@ -233,7 +232,6 @@ function drawLayer() {
       if (gridArray[gridLoop] > .9) { // CIRCLE
         
         ellipse((width/(grid+1)*gridLoopX)+offsetX,(height/(grid+1)*gridLoopY)+offsetY,width/(grid+1)*.6,width/(grid+1)*.6);
-        console.log("CIRCLE - layer - "+currentLayer+", cell - "+gridLoopX+","+gridLoopY+", cellStartX - "+cellStartX);
         
       } else if (gridArray[gridLoop] > .25) { // LINE
       
@@ -278,7 +276,6 @@ function drawLayer() {
           cellStartY = centerCellY-(cellSize*.5),
           cellEndY = centerCellY+(cellSize*.5);
                 
-        console.log("SHAPE - layer - "+currentLayer+", cell - "+gridLoopX+","+gridLoopY+", cellStartX - "+cellStartX+", cellStartY - "+cellStartY);
         drawShape(cellStartX,cellEndX,cellStartY,cellEndY,hereCell,thisColor,hereColorColor);
 
       }
@@ -403,7 +400,6 @@ function drawShape(startX,endX,startY,endY,hereCell=false,thisColor,hereColor) {
     line(shapePoint5xx_inverted,shapePoint5yy_inverted,endX,endY);
   }
   
-  console.log(inverted);
 }
 
 // here color block
@@ -413,19 +409,50 @@ function hereColorBlock(hereColor) {
   hereColor.setAlpha(.0625);
   fill(hereColor);
   
-  if (random(0,1) > .6) {
+  var hereColorBlockType = random(0,1);
+  if (hereColorBlockType > .8) { // right side full height
+    
     rect(0,0,random(10,width*.5),height);
-  } else if (random(0,1) > .2) {
-  //  rect(random(0,width),0,random(width*.25,width*.5),height);
+  
+  } else if (hereColorBlockType > .5) { // lines
+    
+    //rect(random(0,width),0,random(width*.25,width*.5),height);
     for (var hcbi = 0; hcbi<random(width*.25,width*.5); hcbi++) {
       if (random(0,1) >.5) {
         line(hcbi,0,hcbi,height);
       }
     }
-  } else {
+  
+  } else if (hereColorBlockType > .25) { // circle
+    
     var ellipseSize = random(120,420);
     ellipse(width*.5,height*.5,width-ellipseSize,height-ellipseSize);
+  
+  } else { // grid of circles
+    
+    var gridLoopX = 1;
+    var gridLoopY = 0;
+    for (var gridLoop = 0; gridLoop < (grid*grid); gridLoop++) {
+
+      if (gridLoop%grid < 1) {
+        gridLoopY++;
+        gridLoopX = 1;
+      } else {
+        gridLoopX++;
+      }
+      
+      var
+          centerCellX = (width/(grid+1)*gridLoopX),
+          centerCellY = (height/(grid+1)*gridLoopY),
+          cellSize = width/(grid+1);
+      
+      ellipse(centerCellX,centerCellY,40,40);
+    }
+    //var ellipseSize = random(120,420);
+    //ellipse(width*.5,height*.5,width-ellipseSize,height-ellipseSize);
+  
   }
+  
 }
 
 // signature
