@@ -102,7 +102,7 @@ function setup() {
   here = Math.floor(random(1,grid*grid+1));
   
   // signature
-  if (random(0,1) > .1) { signed = true; }
+  if (random(0,1) > .7) { signed = true; }
   console.log("signed - "+signed);
   
   // set up grid
@@ -496,7 +496,7 @@ function signWork() {
     signature.bezierVertex(145.79099999999997,44.763000000000005,150.20099999999996,43.910000000000004,154.49699999999999,43.050000000000004);
     signature.endShape();
 
-    image(signature, width-(156*.75), height-(68*.75));
+    image(signature, width-(156*.6), height-(68*.6));
     
   } else {
     
