@@ -53,6 +53,7 @@ function setup() {
   strokeWidth = random(4,7.5);
   console.log("strokeWidth - "+strokeWidth);
   
+  // colorway
   var colorway = floor(random(1,8)); // 1 - 7
   if (colorway == 1) { // white
     backgroundColor = "rgba(248,248,248,1)";
@@ -60,19 +61,22 @@ function setup() {
     hereColor = random(300,380);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 2) { // blue
-    backgroundColor = "HSB(230,50%,100%)";
+    //backgroundColor = "HSB(230,50%,100%)";
+    backgroundColor = "HSB(220,55%,84%)";
     strokeColor = 255;
-    hereColor = random(300,380);
+    //hereColor = random(300,380);
+    hereColor = random(0,43);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 3) { // orange
-    backgroundColor = "HSB(32,50%,100%)";
+    //backgroundColor = "HSB(32,50%,100%)";
+    backgroundColor = "HSB(32,62%,100%)";
     strokeColor = 255;
     hereColor = random(180,280);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 4) { // green
-    backgroundColor = "HSB(151,50%,100%)";
+    backgroundColor = "HSB(140,28%,94%)";
     strokeColor = 255;
-    hereColor = random(54,360);
+    hereColor = random(0,54);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 5) { // white with blue/purple
     backgroundColor = "rgba(248,248,248,1)";
@@ -86,41 +90,20 @@ function setup() {
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 7) { // yellow
     backgroundColor = "HSB(50,46%,100%)";
-    strokeColor = 255;
+    strokeColor = 0;
     hereColor = random(194,342);
     if (hereColor > 360) { hereColor -= 360; }
   }
-  
-  /*backgroundColor = "rgba(248,248,248,1)";
-  var blueBackground = random(0,1);
-  var orangeBackground = random(0,1);
-  var greenBackground = random(0,1);
-  if (blueBackground > .9) { backgroundColor = "HSB(230,50%,100%)"; }
-  else if (orangeBackground > .9) { backgroundColor = "HSB(32,50%,100%)"; }
-  else if (greenBackground > .9) { backgroundColor = "HSB(151,50%,100%)"; }*/
-  
-  /*backgroundColorLighter = "rgba(248,248,248,1)";
-  if (blueBackground > .9) { backgroundColorLighter = "HSB(230,50%,100%)"; }
-  else if (orangeBackground > .9) { backgroundColorLighter = "HSB(32,50%,100%)"; }
-  else if (greenBackground > .9) { backgroundColorLighter = "HSB(151,50%,100%)"; }*/
   console.log("backgroundColor - "+backgroundColor);
-  
-  /*strokeColor = 0;
-  if (blueBackground > .9) { strokeColor = 255; }
-  else if (orangeBackground > .9) { strokeColor = 255; }
-  else if (greenBackground > .9) { strokeColor = 255; }*/
   console.log("strokeColor - "+strokeColor);
+  console.log("hereColor target hue - "+hereColor);
+  
+  // here cell
+  here = Math.floor(random(1,grid*grid+1));
   
   // signature
   if (random(0,1) > .9) { signed = true; }
   console.log("signed - "+signed);
-  
-  /* "here" color and grid cell
-  hereColor = random(300,380);
-  if (hereColor > 360) { hereColor -= 360; }*/
-  console.log("hereColor target hue - "+hereColor);
-  
-  here = Math.floor(random(1,grid*grid+1));
   
   // set up grid
   for (var i = 0; i < grid*grid; i++) {
@@ -146,13 +129,6 @@ function setup() {
   
   // background
   background(backgroundColor);
-  /*var bgCenter = createGraphics(1000,1000);
-  bgCenter.fill(backgroundColorLighter);
-  bgCenter.noStroke();
-  bgCenter.ellipse(width*.5,height*.5,width-120,height-120);
-  bgCenter.filter(BLUR, 100);
-  bgCenter.filter(BLUR, 100);
-  image(bgCenter, 0, 0);*/
   
   this.focus(); // focus so key listener works right away
   
@@ -268,7 +244,6 @@ function drawLayer() {
     var printThisLayer = random(0,1);
     if (forcePrint || currentLayer < 2 || printThisLayer > .9) { // print or skip
       
-      //console.log(currentLayer + " - "+gridLoop+" = "+gridArray[gridLoop]+" - x:"+gridLoopX+" - y:"+gridLoopY);
       if (gridArray[gridLoop] > .9) { // CIRCLE
         
         ellipse((width/(grid+1)*gridLoopX)+offsetX,(height/(grid+1)*gridLoopY)+offsetY,width/(grid+1)*.6,width/(grid+1)*.6);
@@ -282,22 +257,14 @@ function drawLayer() {
   
         //var dir = random(0,2);
         if (hereCell) {
-          //if (dir < 1) {
           if (gridArray[gridLoop] > .625) {
-          //if (dir < .25) {
             line(centerCellX,centerCellY,centerCellX+(cellSize/2),centerCellY+(cellSize/2));
           } else {
             line(centerCellX,centerCellY,centerCellX-(cellSize/2),centerCellY+(cellSize/2));
           }
-          /*fill(hereColorColor);
-          noStroke();
-          ellipse(centerCellX+10,centerCellY-10,20,20);*/
         } else {
-          //if (dir < .5) {
           if (gridArray[gridLoop] > .625) {
-          //if (dir < .25) {
             line(centerCellX-(cellSize/2),centerCellY-(cellSize/2),centerCellX+(cellSize/2),centerCellY+(cellSize/2));
-            //line(centerCellX-(cellSize/2),centerCellY,centerCellX+(cellSize/2),centerCellY);
           } else {
             line(centerCellX+(cellSize/2),centerCellY-(cellSize/2),centerCellX-(cellSize/2),centerCellY+(cellSize/2));
           }
@@ -325,18 +292,6 @@ function drawLayer() {
     strokeCap(ROUND);
     
     // splatter
-    /*if (random(0,1) > .96) {
-      var offsetWidth = random(-width,width);
-      var offsetHeight = random(-height,height);      
-      for(var i=0;i<1000;i++) {
-        noStroke();
-        thisColor.setAlpha(random(.25,.75));
-        fill(thisColor);
-        if (hereCell) { fill(color(hereColor,100,100)); }
-        ellipse(random(0,width+offsetWidth),random(0,height+offsetHeight),1,1);
-        //ellipse(random(offsetWidth,width+offsetWidth),random(offsetHeight,height+offsetHeight),1,1)
-      }
-    }*/
     if (random(0,1) > .96) {
       for(var i=0;i<2000;i++) {
         noStroke();
@@ -354,12 +309,9 @@ function drawLayer() {
     
   }
   
-  
   // instructions
   jsonInstructions.layers.push(layerInstructions);
-  
-  
-  
+   
 }
 
 // drawShape function - draw a random shape with 5 lines
@@ -410,22 +362,7 @@ function drawShape(startX,endX,startY,endY,hereCell=false,thisColor,hereColor) {
     line(shapePoint4xx,shapePoint4yy,shapePoint5xx,shapePoint5yy);
     if (hereCell && colorLine === 6) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
     line(shapePoint5xx,shapePoint5yy,endX,endY);
-  }/* else {
-    thisColor1 = "blue";
-    if (hereCell && colorLine === 1) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor1);strokeWeight(strokeWidth);strokeCap(ROUND); }
-    line(startY,startX,shapePoint1yy,shapePoint1xx);
-    if (hereCell && colorLine === 2) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor1);strokeWeight(strokeWidth);strokeCap(ROUND); }
-    line(shapePoint1yy,shapePoint1xx,shapePoint2yy,shapePoint2xx);
-    if (hereCell && colorLine === 3) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor1);strokeWeight(strokeWidth);strokeCap(ROUND); }
-    line(shapePoint2yy,shapePoint2xx,shapePoint3yy,shapePoint3xx);
-    if (hereCell && colorLine === 4) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
-    line(shapePoint3yy,shapePoint3xx,shapePoint4yy,shapePoint4xx);
-    if (hereCell && colorLine === 5) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
-    line(shapePoint4yy,shapePoint4xx,shapePoint5yy,shapePoint5xx);
-    if (hereCell && colorLine === 6) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
-    line(shapePoint5yy,shapePoint5xx,endY,endX);
-  }*/
-  else {
+  } else { // inverted <= .1
     if (hereCell && colorLine === 1) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
     line(startX,startY,shapePoint1xx_inverted,shapePoint1yy_inverted);
     if (hereCell && colorLine === 2) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
@@ -491,8 +428,6 @@ function hereColorBlock(hereColor) {
       
       ellipse(centerCellX,centerCellY,40,40);
     }
-    //var ellipseSize = random(120,420);
-    //ellipse(width*.5,height*.5,width-ellipseSize,height-ellipseSize);
   
   }
   
