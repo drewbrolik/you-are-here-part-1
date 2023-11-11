@@ -102,7 +102,7 @@ function setup() {
   here = Math.floor(random(1,grid*grid+1));
   
   // signature
-  if (random(0,1) > .9) { signed = true; }
+  if (random(0,1) > .1) { signed = true; }
   console.log("signed - "+signed);
   
   // set up grid
@@ -295,7 +295,7 @@ function drawLayer() {
     if (random(0,1) > .96) {
       for(var i=0;i<2000;i++) {
         noStroke();
-        thisColor.setAlpha(noise(i)-.5);
+        thisColor.setAlpha(noise(i)-.25);
         fill(thisColor);
         ellipse(random(0,width),random(0,height),1,1);
       }
@@ -435,5 +435,96 @@ function hereColorBlock(hereColor) {
 
 // signature
 function signWork() {
-  line(width-150,height-40,width-50,height-40);
+
+  var whichSig = random(0,1);
+  if (whichSig > .5) {
+    
+    // truedrew signature
+    var signature = createGraphics(156,68);
+
+    signature.scale(.5);
+    signature.noFill();
+
+    signature.stroke("rgba(127,127,127,1)");
+    signature.strokeWeight(2);
+    signature.strokeCap(ROUND);
+    signature.beginShape();
+    signature.vertex(1.753,30.22);
+    signature.bezierVertex(0.7609999999999999,29.557,3.891,29.159,4.973,28.657);
+    signature.bezierVertex(10.327,26.174,15.646,23.613,20.977,21.081);
+    signature.bezierVertex(35.73,14.075,50.841,7.601,66.192,2);
+    signature.endShape();
+    
+    signature.strokeCap(ROUND);
+    signature.beginShape();
+    signature.vertex(34.329,14.074);
+    signature.bezierVertex(34.329,-2.426,33.266,47.074,31.772000000000002,63.504);
+    signature.vertex(36.033,34.528);
+    signature.bezierVertex(36.008,34.525,38.453,60.053,36.033,64.168);
+    signature.bezierVertex(30.630000000000003,73.35300000000001,39.636,40.89900000000001,48.249,34.62200000000001);
+    signature.bezierVertex(53.397000000000006,30.870000000000008,50.335,39.123000000000005,48.817,40.967000000000006);
+    signature.bezierVertex(46.592,43.668000000000006,43.217,58.751000000000005,49.29,53.89300000000001);
+    signature.bezierVertex(52.918,50.99000000000001,54.178,45.78200000000001,55.161,41.48800000000001);
+    signature.bezierVertex(57.086,33.09100000000001,56.071,42.151,59.185,41.401);
+    signature.bezierVertex(60.392,40.254000000000005,67.548,42.254000000000005,68.087,43.622);
+    signature.bezierVertex(68.685,47.52,60.787000000000006,48.546,59.47,44.992);
+    signature.bezierVertex(57.708,48.349999999999994,59.321999999999996,50.199999999999996,59.089999999999996,46.089);
+    signature.bezierVertex(58.95399999999999,54.554,55.080999999999996,52.434,53.31399999999999,43.311);
+    signature.bezierVertex(50.998999999999995,36.362,60.36899999999999,36.256,62.120999999999995,43);
+    signature.bezierVertex(67.253,49.2,65.698,52.138,65.246,NaN);
+    signature.bezierVertex(159.611,NaN,NaN,NaN,68.31299999999999,NaN);
+    signature.bezierVertex(82.88099999999999,NaN,86.21099999999998,NaN,79.97999999999999,NaN);
+    signature.bezierVertex(102.957,NaN,114.54399999999998,NaN,NaN,NaN);
+    signature.endShape();
+    
+    signature.strokeCap(ROUND);
+    signature.beginShape();
+    signature.vertex(82.907,25.153);
+    signature.bezierVertex(78.11,22.34,72.71,20.18,79.64,16.11);
+    signature.bezierVertex(89.952,10.053999999999998,105.218,7.199999999999999,115.86099999999999,13.979);
+    signature.bezierVertex(139.862,29.264,98.74399999999999,61.619,83.19099999999999,64.83);
+    signature.bezierVertex(77.41899999999998,66.02199999999999,90.57699999999998,49.16,91.19299999999998,48.306);
+    signature.bezierVertex(92.64899999999999,46.288999999999994,107.64599999999999,22.086,111.31599999999999,26.951999999999998);
+    signature.bezierVertex(115.99399999999999,33.156,111.29399999999998,47.786,109.84799999999998,54.462);
+    signature.bezierVertex(108.05499999999998,62.738,112.82499999999999,51.565000000000005,114.96099999999998,49.063);
+    signature.bezierVertex(117.54699999999998,46.036,124.05399999999999,42.809000000000005,125.33099999999999,38.978);
+    signature.bezierVertex(126.48799999999999,35.507000000000005,120.17999999999999,44.773,119.69599999999998,48.401);
+    signature.bezierVertex(119.27299999999998,51.577000000000005,120.86099999999999,55.291000000000004,124.00499999999998,51.668000000000006);
+    signature.bezierVertex(124.85599999999998,50.68800000000001,129.38899999999998,42.507000000000005,129.78099999999998,44.566);
+    signature.bezierVertex(130.676,49.262,133.96399999999997,60.902,137.40399999999997,50.294000000000004);
+    signature.bezierVertex(138.55599999999995,46.74400000000001,137.80799999999996,45.961000000000006,141.42899999999997,45.418000000000006);
+    signature.bezierVertex(145.79099999999997,44.763000000000005,150.20099999999996,43.910000000000004,154.49699999999999,43.050000000000004);
+    signature.endShape();
+
+    image(signature, width-(156*.75), height-(68*.75));
+    
+  } else {
+    
+    // drew thomas signature
+    var signature = createGraphics(111,72);
+    
+    signature.scale(.5);
+    signature.noFill();
+    
+    signature.stroke("rgba(127,127,127,1)");
+    signature.strokeWeight(2)
+    signature.strokeCap(ROUND);
+    signature.beginShape();
+    signature.vertex(2.005,62.7);
+    signature.bezierVertex(2.145,52.651,3.8869999999999996,42.260000000000005,6.227,32.533);
+    signature.bezierVertex(8.451,23.293,11.102,13.187000000000001,16.505000000000003,5.200000000000003);
+    signature.bezierVertex(21.070000000000004,-1.5479999999999974,22.321,3.7100000000000026,22.783,9.811000000000003);
+    signature.bezierVertex(23.978,25.584000000000003,23.463,42.387,21.227,58.033);
+    signature.bezierVertex(20.953,59.953,18.017,71.85300000000001,18.172,69.7);
+    signature.bezierVertex(18.344,67.283,25.375,42.256,30.005000000000003,50.589);
+    signature.bezierVertex(30.741000000000003,51.914,35.038000000000004,63.719,37.06,56.978);
+    signature.bezierVertex(38.765,51.297000000000004,40.092,51.902,43.45,54.7);
+    signature.bezierVertex(44.955000000000005,55.955000000000005,56.973,52.412000000000006,58.45,51.978);
+    signature.bezierVertex(75.28200000000001,47.028,91.44,44.145,109.005,44.145);
+    signature.endShape();
+    
+    image(signature, width-(111*.75), height-(72*.75));
+
+  }
+
 }
