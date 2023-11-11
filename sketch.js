@@ -30,7 +30,7 @@ function setup() {
   var date = new Date();
   var seed = round(date.getTime());
   seed = floor(random(100000));
-  //seed = 1699650982011;
+  //seed = 30573;
   randomSeed(seed);
   noiseSeed(seed);
   console.log("seed - "+seed);
@@ -53,36 +53,74 @@ function setup() {
   strokeWidth = random(4,7.5);
   console.log("strokeWidth - "+strokeWidth);
   
-  backgroundColor = "rgba(248,248,248,1)";
+  var colorway = floor(random(1,8)); // 1 - 7
+  if (colorway == 1) { // white
+    backgroundColor = "rgba(248,248,248,1)";
+    strokeColor = 0;
+    hereColor = random(300,380);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 2) { // blue
+    backgroundColor = "HSB(230,50%,100%)";
+    strokeColor = 255;
+    hereColor = random(300,380);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 3) { // orange
+    backgroundColor = "HSB(32,50%,100%)";
+    strokeColor = 255;
+    hereColor = random(180,280);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 4) { // green
+    backgroundColor = "HSB(151,50%,100%)";
+    strokeColor = 255;
+    hereColor = random(54,360);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 5) { // white with blue/purple
+    backgroundColor = "rgba(248,248,248,1)";
+    strokeColor = 0;
+    hereColor = random(180,280);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 6) { // black
+    backgroundColor = "HSB(0,0%,13%)";
+    strokeColor = 255;
+    hereColor = random(155,245);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 7) { // yellow
+    backgroundColor = "HSB(50,46%,100%)";
+    strokeColor = 255;
+    hereColor = random(194,342);
+    if (hereColor > 360) { hereColor -= 360; }
+  }
+  
+  /*backgroundColor = "rgba(248,248,248,1)";
   var blueBackground = random(0,1);
   var orangeBackground = random(0,1);
   var greenBackground = random(0,1);
   if (blueBackground > .9) { backgroundColor = "HSB(230,50%,100%)"; }
   else if (orangeBackground > .9) { backgroundColor = "HSB(32,50%,100%)"; }
-  else if (greenBackground > .9) { backgroundColor = "HSB(151,50%,100%)"; }
+  else if (greenBackground > .9) { backgroundColor = "HSB(151,50%,100%)"; }*/
   
-  backgroundColorLighter = "rgba(248,248,248,1)";
+  /*backgroundColorLighter = "rgba(248,248,248,1)";
   if (blueBackground > .9) { backgroundColorLighter = "HSB(230,50%,100%)"; }
   else if (orangeBackground > .9) { backgroundColorLighter = "HSB(32,50%,100%)"; }
-  else if (greenBackground > .9) { backgroundColorLighter = "HSB(151,50%,100%)"; }
+  else if (greenBackground > .9) { backgroundColorLighter = "HSB(151,50%,100%)"; }*/
   console.log("backgroundColor - "+backgroundColor);
   
-  strokeColor = 0;
+  /*strokeColor = 0;
   if (blueBackground > .9) { strokeColor = 255; }
   else if (orangeBackground > .9) { strokeColor = 255; }
-  else if (greenBackground > .9) { strokeColor = 255; }
+  else if (greenBackground > .9) { strokeColor = 255; }*/
   console.log("strokeColor - "+strokeColor);
   
   // signature
   if (random(0,1) > .9) { signed = true; }
   console.log("signed - "+signed);
   
-  // "here" color and grid cell
+  /* "here" color and grid cell
   hereColor = random(300,380);
-  if (hereColor > 360) { hereColor -= 360; }
+  if (hereColor > 360) { hereColor -= 360; }*/
   console.log("hereColor target hue - "+hereColor);
   
-  here = Math.round(random(1,grid*grid+1));
+  here = Math.floor(random(1,grid*grid+1));
   
   // set up grid
   for (var i = 0; i < grid*grid; i++) {
@@ -108,13 +146,13 @@ function setup() {
   
   // background
   background(backgroundColor);
-  var bgCenter = createGraphics(1000,1000);
+  /*var bgCenter = createGraphics(1000,1000);
   bgCenter.fill(backgroundColorLighter);
   bgCenter.noStroke();
   bgCenter.ellipse(width*.5,height*.5,width-120,height-120);
   bgCenter.filter(BLUR, 100);
   bgCenter.filter(BLUR, 100);
-  image(bgCenter, 0, 0);
+  image(bgCenter, 0, 0);*/
   
   this.focus(); // focus so key listener works right away
   
