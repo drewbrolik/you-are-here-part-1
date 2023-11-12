@@ -74,7 +74,7 @@ function setup() {
     hereColor = random(180,280);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 4) { // green
-    backgroundColor = "HSB(140,28%,94%)";
+    backgroundColor = "HSB(140,30%,85%)";
     strokeColor = 255;
     hereColor = random(0,54);
     if (hereColor > 360) { hereColor -= 360; }
