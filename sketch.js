@@ -248,6 +248,8 @@ function drawLayer() {
         
         ellipse((width/(grid+1)*gridLoopX)+offsetX,(height/(grid+1)*gridLoopY)+offsetY,width/(grid+1)*.6,width/(grid+1)*.6);
         
+        rowInstructions.type = "circle";
+
       } else if (gridArray[gridLoop] > .25) { // LINE
       
         var
@@ -265,8 +267,10 @@ function drawLayer() {
         } else {
           if (gridArray[gridLoop] > .625) {
             line(centerCellX-(cellSize/2),centerCellY-(cellSize/2),centerCellX+(cellSize/2),centerCellY+(cellSize/2));
+            rowInstructions.type = "NW - SE line";
           } else {
             line(centerCellX+(cellSize/2),centerCellY-(cellSize/2),centerCellX-(cellSize/2),centerCellY+(cellSize/2));
+            rowInstructions.type = "SW - NE line";
           }
         }
         
@@ -284,6 +288,8 @@ function drawLayer() {
           cellEndY = centerCellY+(cellSize*.5);
                 
         drawShape(cellStartX,cellEndX,cellStartY,cellEndY,hereCell,thisColor,hereColorColor);
+
+        rowInstructions.type = "Shape";
 
       }
       strokeWeight(strokeWidth);
