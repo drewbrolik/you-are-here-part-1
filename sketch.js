@@ -442,11 +442,11 @@ function signWork() {
     // truedrew signature
     var signature = createGraphics(156,68);
 
-    signature.scale(.5);
+    signature.scale(.45);
     signature.noFill();
 
-    signature.stroke("rgba(127,127,127,1)");
-    signature.strokeWeight(2);
+    signature.stroke("hsb(50,96%,71%)");//("rgba(127,127,127,1)");
+    signature.strokeWeight(1.8);
     signature.strokeCap(ROUND);
     signature.beginShape();
     signature.vertex(1.753,30.22);
@@ -496,7 +496,7 @@ function signWork() {
     signature.bezierVertex(145.79099999999997,44.763000000000005,150.20099999999996,43.910000000000004,154.49699999999999,43.050000000000004);
     signature.endShape();
 
-    image(signature, width-(156*.6), height-(68*.6));
+    image(signature, width-(156*.5), height-(68*.6));
     
   } else {
     
@@ -506,7 +506,7 @@ function signWork() {
     signature.scale(.5);
     signature.noFill();
     
-    signature.stroke("rgba(127,127,127,1)");
+    signature.stroke("hsb(50,96%,71%)");//("rgba(127,127,127,1)");
     signature.strokeWeight(2)
     signature.strokeCap(ROUND);
     signature.beginShape();
@@ -523,7 +523,7 @@ function signWork() {
     signature.bezierVertex(75.28200000000001,47.028,91.44,44.145,109.005,44.145);
     signature.endShape();
     
-    image(signature, width-(111*.75), height-(72*.75));
+    image(signature, width-(111*.6), height-(72*.6));
 
   }
 
