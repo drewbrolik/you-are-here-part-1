@@ -5,7 +5,7 @@ var
   chaosFactor = 0,
   strokeWidth = 4,
   backgroundColor = 90,
-  backgroundColorLighter,
+  //backgroundColorLighter,
   hereColor = 300,
   signed = false,
   strokeColor;
@@ -30,7 +30,7 @@ function setup() {
   var date = new Date();
   var seed = round(date.getTime());
   seed = floor(random(100000));
-  //seed = 30573;
+  //seed = 48589;
   randomSeed(seed);
   noiseSeed(seed);
   console.log("seed - "+seed);
@@ -211,14 +211,40 @@ function drawLayer() {
     if (gridLoop%grid < 1) {
       gridLoopY++;
       gridLoopX = 1;
+      
+      //instructions
+      if (!rowInstructions) {
+        var rowInstructions = {}  
+      } else {
+        layerInstructions.rows.push(rowInstructions);
+        rowInstructions = {}
+      }
+      rowInstructions.row = gridLoopY;
+      rowInstructions.columns = [];
+      if (!columnInstructions) {
+        var columnInstructions = {}
+      } else {
+        columnInstructions = {}
+      }
+      columnInstructions.column = gridLoopX;
+      // end instructions
     } else {
       gridLoopX++;
+      
+      // instructions
+      if (!columnInstructions) {
+        var columnInstructions = {}
+      } else {
+        columnInstructions = {}
+      }
+      columnInstructions.column = gridLoopX;
+      // end instructions
     }
     
     // instructions
-    var rowInstructions = {}
-    rowInstructions.row = gridLoopY;
-    rowInstructions.column = gridLoopX;
+    //var rowInstructions = {}
+    //rowInstructions.row = gridLoopY;
+    //rowInstructions.column = gridLoopX;
 
     // you are here color
     var forcePrint = false;
@@ -248,7 +274,7 @@ function drawLayer() {
         
         ellipse((width/(grid+1)*gridLoopX)+offsetX,(height/(grid+1)*gridLoopY)+offsetY,width/(grid+1)*.6,width/(grid+1)*.6);
         
-        rowInstructions.type = "circle";
+        columnInstructions.type = "circle";
 
       } else if (gridArray[gridLoop] > .25) { // LINE
       
@@ -267,10 +293,10 @@ function drawLayer() {
         } else {
           if (gridArray[gridLoop] > .625) {
             line(centerCellX-(cellSize/2),centerCellY-(cellSize/2),centerCellX+(cellSize/2),centerCellY+(cellSize/2));
-            rowInstructions.type = "NW - SE line";
+            columnInstructions.type = "NW - SE line";
           } else {
             line(centerCellX+(cellSize/2),centerCellY-(cellSize/2),centerCellX-(cellSize/2),centerCellY+(cellSize/2));
-            rowInstructions.type = "SW - NE line";
+            columnInstructions.type = "SW - NE line";
           }
         }
         
@@ -289,10 +315,12 @@ function drawLayer() {
                 
         drawShape(cellStartX,cellEndX,cellStartY,cellEndY,hereCell,thisColor,hereColorColor);
 
-        rowInstructions.type = "Shape";
+        columnInstructions.type = "Shape";
 
       }
       strokeWeight(strokeWidth);
+      
+      if (!columnInstructions.type) { columnInstructions.type = "None"; }
       
     }
     strokeCap(ROUND);
@@ -311,7 +339,9 @@ function drawLayer() {
     thisColor.setAlpha(thisAlpha);
     noFill();
     
-    layerInstructions.rows.push(rowInstructions);
+    rowInstructions.columns.push(columnInstructions);
+    
+    if (gridLoop == (grid*grid) - 1) { layerInstructions.rows.push(rowInstructions); } // add last row
     
   }
   
