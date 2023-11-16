@@ -186,10 +186,6 @@ function keyTyped() {
 
 function drawLayer() {
   
-  var layerInstructions = {}
-  layerInstructions.layer = currentLayer;
-  layerInstructions.rows = [];
-  
   // univeral offset for this layer
   var
     offsetX = chaosFactor*random(1,2),
@@ -203,6 +199,15 @@ function drawLayer() {
   strokeCap(ROUND);
   strokeWeight(strokeWidth);
   noFill();  
+  
+  // instructions
+  var layerInstructions = {}
+  layerInstructions.layer = currentLayer;
+  layerInstructions.alpha = thisAlpha;
+  layerInstructions.strokeWidth = strokeWidth;
+  layerInstructions.offsetX = offsetX;
+  layerInstructions.offsetY = offsetY;
+  layerInstructions.rows = [];
   
   var gridLoopX = 1;
   var gridLoopY = 0;
@@ -240,11 +245,6 @@ function drawLayer() {
       columnInstructions.column = gridLoopX;
       // end instructions
     }
-    
-    // instructions
-    //var rowInstructions = {}
-    //rowInstructions.row = gridLoopY;
-    //rowInstructions.column = gridLoopX;
 
     // you are here color
     var forcePrint = false;
