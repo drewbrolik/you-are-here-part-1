@@ -20,6 +20,8 @@ var here;
 var jsonInstructions = {}
 jsonInstructions.layers = []
 
+var R;
+
 function setup() {
   createCanvas(1000,1000);
   pixelDensity(2);
@@ -27,71 +29,76 @@ function setup() {
   
   // seed
   
-  var date = new Date();
-  var seed = round(date.getTime());
-  seed = floor(random(100000));
-  //seed = 48589;
-  randomSeed(seed);
-  noiseSeed(seed);
-  console.log("seed - "+seed);
+  //var date = new Date();
+  //var seed = round(date.getTime());
+  //seed = floor(R.random_num(100000));
+  const hash = tokenData.hash;
+  const invocation = Number(tokenData.tokenId) % 1_000_000;
+  var seed = hashToSeed(hash);
+  
+  R = new Random();
+  
+  //randomSeed(seed);
+  //noiseSeed(seed);
+  //console.log("seed - "+seed);
   
   // set traits
   
   // number of grid cells
-  grid = Math.floor(random(3,11));
+  grid = Math.floor(R.random_num(3,11));
   console.log("grid - "+grid);
   
   // layers
-  totalLayers = Math.floor(random(1,21));
+  totalLayers = Math.floor(R.random_num(1,21));
   console.log("totalLayers - "+totalLayers);
   
   // chaos number
-  chaosFactor = Math.floor(random(-6,6));
+  chaosFactor = Math.floor(R.random_num(-6,6));
   console.log("chaosFactor - "+chaosFactor);
   
   //styling
-  strokeWidth = random(4,7.5);
+  strokeWidth = R.random_num(4,7.5);
   console.log("strokeWidth - "+strokeWidth);
   
   // colorway
-  var colorway = floor(random(1,8)); // 1 - 7
+  var colorway = floor(R.random_num(1,8)); // 1 - 7
   if (colorway == 1) { // white
     backgroundColor = "rgba(248,248,248,1)";
     strokeColor = 0;
-    hereColor = random(300,380);
+    hereColor = R.random_num(300,380);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 2) { // blue
     //backgroundColor = "HSB(230,50%,100%)";
     backgroundColor = "HSB(220,55%,84%)";
     strokeColor = 255;
-    //hereColor = random(300,380);
-    hereColor = random(0,43);
+    //hereColor = R.random_num(300,380);
+    hereColor = R.random_num(0,43);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 3) { // orange
     //backgroundColor = "HSB(32,50%,100%)";
     backgroundColor = "HSB(32,62%,100%)";
     strokeColor = 255;
-    hereColor = random(180,280);
+    hereColor = R.random_num(180,280);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 4) { // green
     backgroundColor = "HSB(140,30%,85%)";
     strokeColor = 255;
-    hereColor = random(0,54);
+    hereColor = R.random_num(0,54);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 5) { // white with blue/purple
     backgroundColor = "rgba(248,248,248,1)";
     strokeColor = 0;
-    hereColor = random(180,280);
+    hereColor = R.random_num(180,280);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 6) { // black
     backgroundColor = "HSB(0,0%,13%)";
     strokeColor = 255;
-    hereColor = random(155,245);
+    hereColor = R.random_num(155,245);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 7) { // yellow
     backgroundColor = "HSB(50,46%,100%)";
     strokeColor = 0;
-    hereColor = random(194,342);
+    hereColor = R.random_num(194,342);
     if (hereColor > 360) { hereColor -= 360; }
   }
   console.log("backgroundColor - "+backgroundColor);
@@ -99,23 +106,23 @@ function setup() {
   console.log("hereColor target hue - "+hereColor);
   
   // here cell
-  here = Math.floor(random(1,grid*grid+1));
+  here = Math.floor(R.random_num(1,grid*grid+1));
   
   // signature
-  if (random(0,1) > .7) { signed = true; }
+  if (R.random_num(0,1) > .7) { signed = true; }
   console.log("signed - "+signed);
   
   // set up grid
   for (var i = 0; i < grid*grid; i++) {
-    gridArray[i] = random(0,1);
+    gridArray[i] = R.random_num(0,1);
   }
   
   // create shape
-  shapePoint1x = random(0,1),shapePoint1y = random(0,1),
-  shapePoint2x = random(0,1),shapePoint2y = random(0,1),
-  shapePoint3x = random(0,1),shapePoint3y = random(0,1),
-  shapePoint4x = random(0,1),shapePoint4y = random(0,1),
-  shapePoint5x = random(0,1),shapePoint5y = random(0,1);
+  shapePoint1x = R.random_num(0,1),shapePoint1y = R.random_num(0,1),
+  shapePoint2x = R.random_num(0,1),shapePoint2y = R.random_num(0,1),
+  shapePoint3x = R.random_num(0,1),shapePoint3y = R.random_num(0,1),
+  shapePoint4x = R.random_num(0,1),shapePoint4y = R.random_num(0,1),
+  shapePoint5x = R.random_num(0,1),shapePoint5y = R.random_num(0,1);
   
   jsonInstructions.shape = [
     {"x":0,"y":0},
@@ -132,7 +139,7 @@ function setup() {
   
   this.focus(); // focus so key listener works right away
   
-  var hereColorBlockRandom = random(0,1);
+  var hereColorBlockRandom = R.random_num(0,1);
   if (hereColorBlockRandom > .5) { hereColorBlock(hereColor); }
   
 }
@@ -142,7 +149,7 @@ function draw() {
   if (currentLayer > totalLayers) {
   
     // final
-    var hereColorBlockRandom = random(0,1);
+    var hereColorBlockRandom = R.random_num(0,1);
     if (hereColorBlockRandom > .5) { hereColorBlock(hereColor); }
     if (signed) { signWork(); }
     noLoop();
@@ -188,12 +195,12 @@ function drawLayer() {
   
   // univeral offset for this layer
   var
-    offsetX = chaosFactor*random(1,2),
-    offsetY = chaosFactor*random(1,2);
+    offsetX = chaosFactor*R.random_num(1,2),
+    offsetY = chaosFactor*R.random_num(1,2);
   
   // color for this layer
   var thisColor = color(0,0,strokeColor);
-  var thisAlpha = random(.45,.9);
+  var thisAlpha = R.random_num(.45,.9);
   thisColor.setAlpha(thisAlpha);
   stroke(thisColor);
   strokeCap(ROUND);
@@ -250,7 +257,7 @@ function drawLayer() {
     var forcePrint = false;
     var hereCell = false;
     if (gridLoop+1 === here && currentLayer == totalLayers && whereAreYou) {
-      var posNeg = random(-1,1);
+      var posNeg = R.random_num(-1,1);
       hereColor += (chaosFactor*posNeg); // this changes value from trait, based on chaos factor...
 
       // trait
@@ -267,7 +274,7 @@ function drawLayer() {
       hereCell = true;
     }
     
-    var printThisLayer = random(0,1);
+    var printThisLayer = R.random_num(0,1);
     if (forcePrint || currentLayer < 2 || printThisLayer > .9) { // print or skip
       
       if (gridArray[gridLoop] > .9) { // CIRCLE
@@ -283,7 +290,7 @@ function drawLayer() {
           centerCellY = (height/(grid+1)*gridLoopY)+offsetY,
           cellSize = width/(grid+1);
   
-        //var dir = random(0,2);
+        //var dir = R.random_num(0,2);
         if (hereCell) {
           if (gridArray[gridLoop] > .625) {
             line(centerCellX,centerCellY,centerCellX+(cellSize/2),centerCellY+(cellSize/2));
@@ -326,12 +333,12 @@ function drawLayer() {
     strokeCap(ROUND);
     
     // splatter
-    if (random(0,1) > .96) {
+    if (R.random_num(0,1) > .96) {
       for(var i=0;i<2000;i++) {
         noStroke();
         thisColor.setAlpha(noise(i)-.25);
         fill(thisColor);
-        ellipse(random(0,width),random(0,height),1,1);
+        ellipse(R.random_num(0,width),R.random_num(0,height),1,1);
       }
     }
     // reset fill and stroke
@@ -383,8 +390,8 @@ function drawShape(startX,endX,startY,endY,hereCell=false,thisColor,hereColor) {
     shapePoint5xx_inverted = startX+shapePoint5y*(endX-startX),
     shapePoint5yy_inverted = startY+shapePoint5x*(endY-startY);
 
-  if (hereCell) { var colorLine = Math.floor(random(1,7)); }
-  var inverted = random(0,1);
+  if (hereCell) { var colorLine = Math.floor(R.random_num(1,7)); }
+  var inverted = R.random_num(0,1);
   if (inverted > .1) {
     if (hereCell && colorLine === 1) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
     line(startX,startY,shapePoint1xx,shapePoint1yy);
@@ -422,18 +429,18 @@ function hereColorBlock(hereColor) {
   hereColor.setAlpha(.0625);
   fill(hereColor);
   
-  var hereColorBlockType = random(0,1);
+  var hereColorBlockType = R.random_num(0,1);
   if (hereColorBlockType > .8) { // right side full height
     
-    rect(0,0,random(10,width*.5),height);
+    rect(0,0,R.random_num(10,width*.5),height);
   
   } else if (hereColorBlockType > .5) { // lines
     
-    //rect(random(0,width),0,random(width*.25,width*.5),height);
-    var hcbs = random(0,width*.5);
-    var hcbw = random(width*.25,width*.5);
+    //rect(R.random_num(0,width),0,R.random_num(width*.25,width*.5),height);
+    var hcbs = R.random_num(0,width*.5);
+    var hcbw = R.random_num(width*.25,width*.5);
     for (var hcbi = hcbs; hcbi<hcbw; hcbi++) {
-      if (random(0,1) >.5) {
+      if (R.random_num(0,1) >.5) {
         //line(hcbi,0,hcbi,height);
         rect(hcbi,0,1,height);
       }
@@ -441,7 +448,7 @@ function hereColorBlock(hereColor) {
   
   } else if (hereColorBlockType > .25) { // circle
     
-    var ellipseSize = random(120,420);
+    var ellipseSize = R.random_num(120,420);
     ellipse(width*.5,height*.5,width-ellipseSize,height-ellipseSize);
   
   } else { // grid of circles
@@ -472,7 +479,7 @@ function hereColorBlock(hereColor) {
 // signature
 function signWork() {
 
-  var whichSig = random(0,1);
+  var whichSig = R.random_num(0,1);
   if (whichSig > .5) {
     
     // truedrew signature
@@ -563,4 +570,64 @@ function signWork() {
 
   }
 
+}
+
+function hashToSeed(hash) {
+  // Sum up the character codes of the hash string
+  return Array.from(hash).reduce((sum, char) => sum + char.charCodeAt(0), 0);
+}
+
+class Random {
+  constructor() {
+    this.useA = false;
+    let sfc32 = function (uint128Hex) {
+      let a = parseInt(uint128Hex.substring(0, 8), 16);
+      let b = parseInt(uint128Hex.substring(8, 16), 16);
+      let c = parseInt(uint128Hex.substring(16, 24), 16);
+      let d = parseInt(uint128Hex.substring(24, 32), 16);
+      return function () {
+        a |= 0;
+        b |= 0;
+        c |= 0;
+        d |= 0;
+        let t = (((a + b) | 0) + d) | 0;
+        d = (d + 1) | 0;
+        a = b ^ (b >>> 9);
+        b = (c + (c << 3)) | 0;
+        c = (c << 21) | (c >>> 11);
+        c = (c + t) | 0;
+        return (t >>> 0) / 4294967296;
+      };
+    };
+    // seed prngA with first half of tokenData.hash
+    this.prngA = new sfc32(tokenData.hash.substring(2, 34));
+    // seed prngB with second half of tokenData.hash
+    this.prngB = new sfc32(tokenData.hash.substring(34, 66));
+    for (let i = 0; i < 1e6; i += 2) {
+      this.prngA();
+      this.prngB();
+    }
+  }
+  // random number between 0 (inclusive) and 1 (exclusive)
+  random_dec() {
+    this.useA = !this.useA;
+    return this.useA ? this.prngA() : this.prngB();
+  }
+  // random number between a (inclusive) and b (exclusive)
+  random_num(a, b) {
+    return a + (b - a) * this.random_dec();
+  }
+  // random integer between a (inclusive) and b (inclusive)
+  // requires a < b for proper probability distribution
+  random_int(a, b) {
+    return Math.floor(this.random_num(a, b + 1));
+  }
+  // random boolean with p as percent liklihood of true
+  random_bool(p) {
+    return this.random_dec() < p;
+  }
+  // random value in an array of items
+  random_choice(list) {
+    return list[this.random_int(0, list.length - 1)];
+  }
 }
