@@ -20,7 +20,7 @@ var here;
 var jsonInstructions = {}
 jsonInstructions.layers = []
 
-var R;
+var R,posNeg;
 
 function setup() {
   createCanvas(1000,1000);
@@ -34,7 +34,7 @@ function setup() {
   //seed = floor(R.random_num(100000));
   const hash = tokenData.hash;
   const invocation = Number(tokenData.tokenId) % 1_000_000;
-  var seed = hashToSeed(hash);
+  //var seed = hashToSeed(hash);
   
   R = new Random();
   
@@ -107,7 +107,8 @@ function setup() {
   
   // here cell
   here = Math.floor(R.random_num(1,grid*grid+1));
-  
+  posNeg = R.random_num(-1,1);
+
   // signature
   if (R.random_num(0,1) > .7) { signed = true; }
   console.log("signed - "+signed);
@@ -257,7 +258,7 @@ function drawLayer() {
     var forcePrint = false;
     var hereCell = false;
     if (gridLoop+1 === here && currentLayer == totalLayers && whereAreYou) {
-      var posNeg = R.random_num(-1,1);
+      //var posNeg = R.random_num(-1,1);
       hereColor += (chaosFactor*posNeg); // this changes value from trait, based on chaos factor...
 
       // trait
@@ -572,10 +573,10 @@ function signWork() {
 
 }
 
-function hashToSeed(hash) {
+/*function hashToSeed(hash) {
   // Sum up the character codes of the hash string
   return Array.from(hash).reduce((sum, char) => sum + char.charCodeAt(0), 0);
-}
+}*/
 
 class Random {
   constructor() {

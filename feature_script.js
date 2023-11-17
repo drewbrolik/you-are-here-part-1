@@ -31,7 +31,6 @@ function calculateFeatures(tokenData) {
     chaosFactor = 0,
     strokeWidth = 4,
     backgroundColor = 90,
-    //backgroundColorLighter,
     hereColor = 300,
     signed = false,
     strokeColor;
@@ -43,95 +42,94 @@ function calculateFeatures(tokenData) {
   var whereAreYou = true;
   var here;
 
-  var jsonInstructions = {}
-  jsonInstructions.layers = []
+  var R = new Random();
+  var posNeg;
 
+  // number of grid cells
+  grid = Math.floor(R.random_num(3,11));
+  featureResponse["Grid"] = grid+"x"+grid;
   
-  var R;  
-    
-    // seed
-    
-    //const hash = tokenData.hash;
-    //const invocation = Number(tokenData.tokenId) % 1_000_000;
-    var seed = hashToSeed(hash);
+  // layers
+  totalLayers = Math.floor(R.random_num(1,21));
+  featureResponse["Layers"] = totalLayers;
   
-    R = new Random();
-    
-    // set traits
-    
-    // number of grid cells
-    grid = Math.floor(R.random_num(3,11));
-    featureResponse["Grid"] = grid+"x"+grid;
-    
-    // layers
-    totalLayers = Math.floor(R.random_num(1,21));
-    featureResponse["Layers"] = totalLayers;
-    
-    // chaos number
-    chaosFactor = Math.floor(R.random_num(-6,6));
-    featureResponse["Chaos Factor"] = chaosFactor;
-    
-    //styling
-    strokeWidth = R.random_num(4,7.5);
-    featureResponse["Stroke Width"] = strokeWidth;
-    
-    // colorway
-    var colorway = Math.floor(R.random_num(1,8)); // 1 - 7
-    if (colorway == 1) { // white
-      backgroundColor = "rgba(248,248,248,1)";
-      strokeColor = 0;
-      hereColor = R.random_num(300,380);
-      if (hereColor > 360) { hereColor -= 360; }
-    } else if (colorway == 2) { // blue
-      //backgroundColor = "HSB(230,50%,100%)";
-      backgroundColor = "HSB(220,55%,84%)";
-      strokeColor = 255;
-      //hereColor = R.random_num(300,380);
-      hereColor = R.random_num(0,43);
-      if (hereColor > 360) { hereColor -= 360; }
-    } else if (colorway == 3) { // orange
-      //backgroundColor = "HSB(32,50%,100%)";
-      backgroundColor = "HSB(32,62%,100%)";
-      strokeColor = 255;
-      hereColor = R.random_num(180,280);
-      if (hereColor > 360) { hereColor -= 360; }
-    } else if (colorway == 4) { // green
-      backgroundColor = "HSB(140,30%,85%)";
-      strokeColor = 255;
-      hereColor = R.random_num(0,54);
-      if (hereColor > 360) { hereColor -= 360; }
-    } else if (colorway == 5) { // white with blue/purple
-      backgroundColor = "rgba(248,248,248,1)";
-      strokeColor = 0;
-      hereColor = R.random_num(180,280);
-      if (hereColor > 360) { hereColor -= 360; }
-    } else if (colorway == 6) { // black
-      backgroundColor = "HSB(0,0%,13%)";
-      strokeColor = 255;
-      hereColor = R.random_num(155,245);
-      if (hereColor > 360) { hereColor -= 360; }
-    } else if (colorway == 7) { // yellow
-      backgroundColor = "HSB(50,46%,100%)";
-      strokeColor = 0;
-      hereColor = R.random_num(194,342);
-      if (hereColor > 360) { hereColor -= 360; }
-    }
-    featureResponse["Background Color"] = backgroundColor;
-    featureResponse["Stroke Color"] = strokeColor;
-    featureResponse["Here Color"] = hereColor;
-    
-    // signature
-    if (R.random_num(0,1) > .7) { signed = true; }
-    featureResponse["Signed"] = signed;
+  // chaos number
+  chaosFactor = Math.floor(R.random_num(-6,6));
+  featureResponse["Chaos Factor"] = chaosFactor;
+  
+  //styling
+  strokeWidth = R.random_num(4,7.5);
+  featureResponse["Stroke Width"] = strokeWidth;
+  
+  // colorway
+  var colorway = Math.floor(R.random_num(1,8)); // 1 - 7
+  if (colorway == 1) { // white
+    backgroundColor = "White";// "rgba(248,248,248,1)";
+    strokeColor = "Black";
+    hereColor = R.random_num(300,380);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 2) { // blue
+    //backgroundColor = "HSB(230,50%,100%)";
+    backgroundColor = "Blue";// "HSB(220,55%,84%)";
+    strokeColor = "White";
+    //hereColor = R.random_num(300,380);
+    hereColor = R.random_num(0,43);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 3) { // orange
+    //backgroundColor = "HSB(32,50%,100%)";
+    backgroundColor = "Orange"; // "HSB(32,62%,100%)";
+    strokeColor = "White";
+    hereColor = R.random_num(180,280);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 4) { // green
+    backgroundColor = "Green"; // "HSB(140,30%,85%)";
+    strokeColor = "White";
+    hereColor = R.random_num(0,54);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 5) { // white with blue/purple
+    backgroundColor = "White"; // "rgba(248,248,248,1)";
+    strokeColor = "Black";
+    hereColor = R.random_num(180,280);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 6) { // black
+    backgroundColor = "Dark gray"; // "HSB(0,0%,13%)";
+    strokeColor = "White";
+    hereColor = R.random_num(155,245);
+    if (hereColor > 360) { hereColor -= 360; }
+  } else if (colorway == 7) { // yellow
+    backgroundColor = "Yellow"; // "HSB(50,46%,100%)";
+    strokeColor = "Black";
+    hereColor = R.random_num(194,342);
+    if (hereColor > 360) { hereColor -= 360; }
+  }
+  featureResponse["Background Color"] = backgroundColor;
+  featureResponse["Stroke Color"] = strokeColor;
+  featureResponse["Here Color"] = hslToHex(hereColor,100,50);
+
+  here = Math.floor(R.random_num(1,grid*grid+1));
+  posNeg = R.random_num(-1,1);
+  //hereColor += (chaosFactor*posNeg); // this changes value from trait, based on chaos factor...
+
+  // trait
+  //console.log("hereColor actual hue - "+hereColor);
+  //console.log("hereColor deviation - "+((chaosFactor*posNeg)/(360)*100));
+  featureResponse["Here Color Deviation"] = ((chaosFactor*posNeg)/(360)*100);
+
+
+  // signature
+  if (R.random_num(0,1) > .7) { signed = true; }
+  featureResponse["Signed"] = signed;
+
+
 
 
   return featureResponse;
 }
 
-function hashToSeed(hash) {
+/*function hashToSeed(hash) {
   // Sum up the character codes of the hash string
   return Array.from(hash).reduce((sum, char) => sum + char.charCodeAt(0), 0);
-}
+}*/
 
 class Random {
   constructor() {
@@ -186,4 +184,15 @@ class Random {
   random_choice(list) {
     return list[this.random_int(0, list.length - 1)];
   }
+}
+
+function hslToHex(h, s, l) {
+  l /= 100;
+  const a = s * Math.min(l, 1 - l) / 100;
+  const f = n => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, '0');   // convert to Hex and prefix "0" if needed
+  };
+  return `#${f(0)}${f(8)}${f(4)}`;
 }
