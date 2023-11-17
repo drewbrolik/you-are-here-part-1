@@ -5,7 +5,6 @@ var
   chaosFactor = 0,
   strokeWidth = 4,
   backgroundColor = 90,
-  //backgroundColorLighter,
   hereColor = 300,
   signed = false,
   strokeColor;
@@ -20,7 +19,7 @@ var here;
 var jsonInstructions = {}
 jsonInstructions.layers = []
 
-var R,posNeg;
+var R,posNeg,whichSig;
 
 function setup() {
   createCanvas(1000,1000);
@@ -110,7 +109,10 @@ function setup() {
   posNeg = R.random_num(-1,1);
 
   // signature
-  if (R.random_num(0,1) > .7) { signed = true; }
+  if (R.random_num(0,1) > .7) {
+    signed = true;
+    whichSig = R.random_num(0,1);
+  }
   console.log("signed - "+signed);
   
   // set up grid
@@ -480,7 +482,7 @@ function hereColorBlock(hereColor) {
 // signature
 function signWork() {
 
-  var whichSig = R.random_num(0,1);
+  //var whichSig = R.random_num(0,1);
   if (whichSig > .5) {
     
     // truedrew signature

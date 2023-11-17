@@ -43,7 +43,7 @@ function calculateFeatures(tokenData) {
   var here;
 
   var R = new Random();
-  var posNeg;
+  var posNeg,whichSig;
 
   // number of grid cells
   grid = Math.floor(R.random_num(3,11));
@@ -113,12 +113,15 @@ function calculateFeatures(tokenData) {
   // trait
   //console.log("hereColor actual hue - "+hereColor);
   //console.log("hereColor deviation - "+((chaosFactor*posNeg)/(360)*100));
-  featureResponse["Here Color Deviation"] = ((chaosFactor*posNeg)/(360)*100);
+  featureResponse["Here Color Deviation"] = ((chaosFactor*posNeg)/(360)*100).toFixed(2)+"%";
 
 
   // signature
-  if (R.random_num(0,1) > .7) { signed = true; }
-  featureResponse["Signed"] = signed;
+  if (R.random_num(0,1) > .7) {
+    signed = true;
+    whichSig = R.random_num(0,1);
+  }
+  featureResponse["Signature"] = signed ? (whichSig > .5 ? "Truedrew" : "Drew Thomas" ) : "None";
 
 
 
