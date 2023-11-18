@@ -96,6 +96,15 @@ function calculateFeatures(tokenData) {
     hereColor = R.random_num(194,342);
     if (hereColor > 360) { hereColor -= 360; }
   }
+
+  // invert
+  /*var invert = R.random_num(1,100);
+  if (invert > 50) {
+    var backgroundColor_temp = backgroundColor;
+    backgroundColor = strokeColor;
+    strokeColor = backgroundColor_temp;
+  }*/
+
   featureResponse["Background Color"] = backgroundColor;
   featureResponse["Stroke Color"] = strokeColor;
   featureResponse["Here Color"] = hslToHex(hereColor,100,50); // 50 l in hsl = 100 b in hsb

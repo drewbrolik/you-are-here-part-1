@@ -91,6 +91,14 @@ function setup() {
   //console.log("strokeColor - "+strokeColor);
   //console.log("hereColor target hue - "+hereColor);
   
+  // invert
+  /*var invert = R.random_num(1,100);
+  if (invert > 50) {
+    var backgroundColor_temp = backgroundColor;
+    backgroundColor = strokeColor;
+    strokeColor = backgroundColor_temp;
+  }*/
+
   // here cell
   here = Math.floor(R.random_num(1,grid*grid+1));
   posNeg = R.random_num(-1,1);
@@ -141,6 +149,8 @@ function draw() {
     // final
     var hereColorBlockRandom = R.random_num(0,1);
     if (hereColorBlockRandom > .5) { hereColorBlock(hereColor); }
+    hereColorBlockRandom = R.random_num(0,1);
+    if (hereColorBlockRandom > .75) { hereColorBlock(hereColor); }
     if (signed) { signWork(); }
     noLoop();
   
@@ -435,6 +445,8 @@ function hereColorBlock(hereColor) {
   
   } else if (hereColorBlockType > .1) { // grid of circles
     
+    if (R.random_num(0,1) > .9) { fill(0); }
+
     var gridLoopX = 1;
     var gridLoopY = 0;
     for (var gridLoop = 0; gridLoop < (grid*grid); gridLoop++) {
