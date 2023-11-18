@@ -284,13 +284,19 @@ function drawLayer() {
           cellSize = width/(grid+1);
   
         if (hereCell) {
+          //noStroke();
+          //fill(hereColorColor);
           if (gridArray[gridLoop] > .625) {
             line(centerCellX,centerCellY,centerCellX+(cellSize/2),centerCellY+(cellSize/2));
+            //ellipse((width/(grid+1)*gridLoopX)+offsetX+(strokeWidth*2),(height/(grid+1)*gridLoopY-(strokeWidth*2))+offsetY,10,10);
             columnInstructions.type = "NW - SE line";
           } else {
+            //ellipse((width/(grid+1)*gridLoopX)+offsetX-(strokeWidth*2),(height/(grid+1)*gridLoopY-(strokeWidth*2))+offsetY,10,10);
             line(centerCellX,centerCellY,centerCellX-(cellSize/2),centerCellY+(cellSize/2));
             columnInstructions.type = "SW - NE line";
           }
+          //stroke(hereColorColor);
+          //noFill();
         } else {
           if (gridArray[gridLoop] > .625) {
             line(centerCellX-(cellSize/2),centerCellY-(cellSize/2),centerCellX+(cellSize/2),centerCellY+(cellSize/2));
@@ -445,7 +451,7 @@ function hereColorBlock(hereColor) {
   
   } else if (hereColorBlockType > .1) { // grid of circles
     
-    if (R.random_num(0,1) > .9) { fill(0); }
+    if (R.random_num(0,1) > .9) { fill(0); } // chance for all black dots
 
     var gridLoopX = 1;
     var gridLoopY = 0;
