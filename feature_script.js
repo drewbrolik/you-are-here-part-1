@@ -33,17 +33,11 @@ function calculateFeatures(tokenData) {
     backgroundColor = 90,
     hereColor = 300,
     signed = false,
-    strokeColor;
-
-  // array of random values for each grid cell
-  var gridArray = [];
-
-  // set grid cell for "here" color
-  var whereAreYou = true;
-  var here;
-
-  var R = new Random();
-  var posNeg,whichSig;
+    strokeColor,
+    here,
+    posNeg,
+    whichSig,
+    R = new Random();
 
   // number of grid cells
   grid = Math.floor(R.random_num(3,11));
@@ -104,17 +98,12 @@ function calculateFeatures(tokenData) {
   }
   featureResponse["Background Color"] = backgroundColor;
   featureResponse["Stroke Color"] = strokeColor;
-  featureResponse["Here Color"] = hslToHex(hereColor,100,50);
+  featureResponse["Here Color"] = hslToHex(hereColor,100,50); // 50 l in hsl = 100 b in hsb
 
   here = Math.floor(R.random_num(1,grid*grid+1));
   posNeg = R.random_num(-1,1);
-  //hereColor += (chaosFactor*posNeg); // this changes value from trait, based on chaos factor...
 
-  // trait
-  //console.log("hereColor actual hue - "+hereColor);
-  //console.log("hereColor deviation - "+((chaosFactor*posNeg)/(360)*100));
   featureResponse["Here Color Deviation"] = ((chaosFactor*posNeg)/(360)*100).toFixed(2)+"%";
-
 
   // signature
   if (R.random_num(0,1) > .7) {
@@ -122,9 +111,6 @@ function calculateFeatures(tokenData) {
     whichSig = R.random_num(0,1);
   }
   featureResponse["Signature"] = signed ? (whichSig > .5 ? "Truedrew" : "Drew Thomas" ) : "None";
-
-
-
 
   return featureResponse;
 }

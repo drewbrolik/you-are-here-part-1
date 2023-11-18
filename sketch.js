@@ -1,25 +1,24 @@
 var
-  grid = 3,
-  currentLayer = 1,
-  totalLayers = 10,
-  chaosFactor = 0,
-  strokeWidth = 4,
-  backgroundColor = 90,
-  hereColor = 300,
+  grid,
+  totalLayers,
+  chaosFactor,
+  strokeWidth,
+  backgroundColor,
+  hereColor,
   signed = false,
   strokeColor;
 
-// array of random values for each grid cell
-var gridArray = [];
-
-// set grid cell for "here" color
-var whereAreYou = true;
-var here;
+var
+  currentLayer = 1,
+  gridArray = [],
+  here,
+  whereAreYou = true,
+  R,
+  posNeg,
+  whichSig;
 
 var jsonInstructions = {}
 jsonInstructions.layers = []
-
-var R,posNeg,whichSig;
 
 function setup() {
   createCanvas(1000,1000);
@@ -27,37 +26,28 @@ function setup() {
   colorMode(HSB, 360, 100, 100);
   
   // seed
-  
-  //var date = new Date();
-  //var seed = round(date.getTime());
-  //seed = floor(R.random_num(100000));
   const hash = tokenData.hash;
   const invocation = Number(tokenData.tokenId) % 1_000_000;
-  //var seed = hashToSeed(hash);
   
   R = new Random();
-  
-  //randomSeed(seed);
-  //noiseSeed(seed);
-  //console.log("seed - "+seed);
   
   // set traits
   
   // number of grid cells
   grid = Math.floor(R.random_num(3,11));
-  console.log("grid - "+grid);
+  //console.log("grid - "+grid);
   
   // layers
   totalLayers = Math.floor(R.random_num(1,21));
-  console.log("totalLayers - "+totalLayers);
+  //console.log("totalLayers - "+totalLayers);
   
   // chaos number
   chaosFactor = Math.floor(R.random_num(-6,6));
-  console.log("chaosFactor - "+chaosFactor);
+  //console.log("chaosFactor - "+chaosFactor);
   
   //styling
   strokeWidth = R.random_num(4,7.5);
-  console.log("strokeWidth - "+strokeWidth);
+  //console.log("strokeWidth - "+strokeWidth);
   
   // colorway
   var colorway = floor(R.random_num(1,8)); // 1 - 7
@@ -67,14 +57,11 @@ function setup() {
     hereColor = R.random_num(300,380);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 2) { // blue
-    //backgroundColor = "HSB(230,50%,100%)";
     backgroundColor = "HSB(220,55%,84%)";
     strokeColor = 255;
-    //hereColor = R.random_num(300,380);
     hereColor = R.random_num(0,43);
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 3) { // orange
-    //backgroundColor = "HSB(32,50%,100%)";
     backgroundColor = "HSB(32,62%,100%)";
     strokeColor = 255;
     hereColor = R.random_num(180,280);
@@ -100,9 +87,9 @@ function setup() {
     hereColor = R.random_num(194,342);
     if (hereColor > 360) { hereColor -= 360; }
   }
-  console.log("backgroundColor - "+backgroundColor);
-  console.log("strokeColor - "+strokeColor);
-  console.log("hereColor target hue - "+hereColor);
+  //console.log("backgroundColor - "+backgroundColor);
+  //console.log("strokeColor - "+strokeColor);
+  //console.log("hereColor target hue - "+hereColor);
   
   // here cell
   here = Math.floor(R.random_num(1,grid*grid+1));
@@ -113,7 +100,7 @@ function setup() {
     signed = true;
     whichSig = R.random_num(0,1);
   }
-  console.log("signed - "+signed);
+  //console.log("signed - "+signed);
   
   // set up grid
   for (var i = 0; i < grid*grid; i++) {
@@ -156,7 +143,6 @@ function draw() {
     if (hereColorBlockRandom > .5) { hereColorBlock(hereColor); }
     if (signed) { signWork(); }
     noLoop();
-    //preview();
   
   } else {
 
@@ -168,8 +154,7 @@ function draw() {
 
 function keyTyped() {
 
-  // show original (revert)
-  if (key === 'r') {
+  /*if (key === 'r') {
     drawLayer();
   }
 
@@ -177,12 +162,7 @@ function keyTyped() {
     for(var i = 0; i < 10; i++) {
       drawLayer();
     }
-  }
-  
-  if (key === 'j') {
-    console.log('here cell - '+here);
-    console.log(gridArray);
-  }
+  }*/
   
   if (key === 'i') {
     saveJSON(jsonInstructions, 'instructions.json');
@@ -260,12 +240,12 @@ function drawLayer() {
     var forcePrint = false;
     var hereCell = false;
     if (gridLoop+1 === here && currentLayer == totalLayers && whereAreYou) {
-      //var posNeg = R.random_num(-1,1);
+
       hereColor += (chaosFactor*posNeg); // this changes value from trait, based on chaos factor...
 
       // trait
-      console.log("hereColor actual hue - "+hereColor);
-      console.log("hereColor deviation - "+((chaosFactor*posNeg)/(360)*100));
+      //console.log("hereColor actual hue - "+hereColor);
+      //console.log("hereColor deviation - "+((chaosFactor*posNeg)/(360)*100));
 
       var hereColorColor = color(hereColor,100,100);
       hereColorColor.setAlpha(1);
@@ -293,12 +273,13 @@ function drawLayer() {
           centerCellY = (height/(grid+1)*gridLoopY)+offsetY,
           cellSize = width/(grid+1);
   
-        //var dir = R.random_num(0,2);
         if (hereCell) {
           if (gridArray[gridLoop] > .625) {
             line(centerCellX,centerCellY,centerCellX+(cellSize/2),centerCellY+(cellSize/2));
+            columnInstructions.type = "NW - SE line";
           } else {
             line(centerCellX,centerCellY,centerCellX-(cellSize/2),centerCellY+(cellSize/2));
+            columnInstructions.type = "SW - NE line";
           }
         } else {
           if (gridArray[gridLoop] > .625) {
@@ -433,28 +414,26 @@ function hereColorBlock(hereColor) {
   fill(hereColor);
   
   var hereColorBlockType = R.random_num(0,1);
-  if (hereColorBlockType > .8) { // right side full height
+  if (hereColorBlockType > .8) { // left side full height
     
     rect(0,0,R.random_num(10,width*.5),height);
   
-  } else if (hereColorBlockType > .5) { // lines
+  } else if (hereColorBlockType > .55) { // lines
     
-    //rect(R.random_num(0,width),0,R.random_num(width*.25,width*.5),height);
     var hcbs = R.random_num(0,width*.5);
     var hcbw = R.random_num(width*.25,width*.5);
     for (var hcbi = hcbs; hcbi<hcbw; hcbi++) {
       if (R.random_num(0,1) >.5) {
-        //line(hcbi,0,hcbi,height);
         rect(hcbi,0,1,height);
       }
     }
   
-  } else if (hereColorBlockType > .25) { // circle
+  } else if (hereColorBlockType > .35) { // circle
     
     var ellipseSize = R.random_num(120,420);
     ellipse(width*.5,height*.5,width-ellipseSize,height-ellipseSize);
   
-  } else { // grid of circles
+  } else if (hereColorBlockType > .1) { // grid of circles
     
     var gridLoopX = 1;
     var gridLoopY = 0;
@@ -475,6 +454,14 @@ function hereColorBlock(hereColor) {
       ellipse(centerCellX,centerCellY,40,40);
     }
   
+  } else { // triangle
+
+    beginShape();
+    vertex(width,0);
+    vertex(width*.5,height*.5);
+    vertex(width,height);
+    endShape();
+
   }
   
 }
@@ -574,11 +561,6 @@ function signWork() {
   }
 
 }
-
-/*function hashToSeed(hash) {
-  // Sum up the character codes of the hash string
-  return Array.from(hash).reduce((sum, char) => sum + char.charCodeAt(0), 0);
-}*/
 
 class Random {
   constructor() {
