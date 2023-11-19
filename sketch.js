@@ -47,6 +47,7 @@ function setup() {
   
   //styling
   strokeWidth = R.random_num(4,7.5);
+  jsonInstructions.strokeWidth = strokeWidth;
   //console.log("strokeWidth - "+strokeWidth);
   
   // colorway
@@ -204,7 +205,7 @@ function drawLayer() {
   var layerInstructions = {}
   layerInstructions.layer = currentLayer;
   layerInstructions.alpha = thisAlpha;
-  layerInstructions.strokeWidth = strokeWidth;
+  //layerInstructions.strokeWidth = strokeWidth;
   layerInstructions.offsetX = offsetX;
   layerInstructions.offsetY = offsetY;
   layerInstructions.rows = [];
@@ -299,8 +300,24 @@ function drawLayer() {
           //noFill();
         } else {
           if (gridArray[gridLoop] > .625) {
-            line(centerCellX-(cellSize/2),centerCellY-(cellSize/2),centerCellX+(cellSize/2),centerCellY+(cellSize/2));
-            columnInstructions.type = "NW - SE line";
+
+            // prevent +
+            if (currentLayer == 1 && (
+                (gridLoopX > 1 && rowInstructions.columns[(gridLoopX - 1)-1].type == "SW - NE line")
+                && (gridLoopY > 1 && layerInstructions.rows[(gridLoopY - 1)-1].columns[gridLoopX - 1].type == "SW - NE line")
+                && (gridLoopY > 1 && layerInstructions.rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "NW - SE line")
+              ) || (currentLayer > 1 && (
+                (gridLoopX > 1 && jsonInstructions.layers[0].rows[gridLoopY - 1].columns[(gridLoopX - 1)-1].type == "SW - NE line")
+                && (gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[gridLoopX - 1].type == "SW - NE line")
+                && (gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "NW - SE line")
+              ))
+            ) {
+              // don't draw line
+              console.log("don't draw, auto-prevented... row "+gridLoopY+", column "+gridLoopX);
+            } else {
+              line(centerCellX-(cellSize/2),centerCellY-(cellSize/2),centerCellX+(cellSize/2),centerCellY+(cellSize/2));
+              columnInstructions.type = "NW - SE line";
+            }
           } else {
             line(centerCellX+(cellSize/2),centerCellY-(cellSize/2),centerCellX-(cellSize/2),centerCellY+(cellSize/2));
             columnInstructions.type = "SW - NE line";
