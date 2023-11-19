@@ -313,6 +313,8 @@ function drawLayer() {
               ))
             ) {
               // don't draw line
+              line(centerCellX+(cellSize/2),centerCellY-(cellSize/2),centerCellX-(cellSize/2),centerCellY+(cellSize/2));
+              columnInstructions.type = "SW - NE line";
               console.log("don't draw, auto-prevented... row "+gridLoopY+", column "+gridLoopX);
             } else {
               line(centerCellX-(cellSize/2),centerCellY-(cellSize/2),centerCellX+(cellSize/2),centerCellY+(cellSize/2));
