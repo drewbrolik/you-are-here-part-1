@@ -37,7 +37,10 @@ function calculateFeatures(tokenData) {
     here,
     posNeg,
     whichSig,
-    R = new Random();
+    R = new Random(),
+    hereColorBlockType1,
+    hereColorBlockType2,
+    hereColorBlockType3;
 
   // number of grid cells
   grid = Math.floor(R.random_num(3,11));
@@ -53,7 +56,7 @@ function calculateFeatures(tokenData) {
   
   //styling
   strokeWidth = R.random_num(4,7.5);
-  featureResponse["Stroke Width"] = strokeWidth;
+  featureResponse["Line Width"] = Math.round(strokeWidth);
   
   // colorway
   var colorway = Math.floor(R.random_num(1,8)); // 1 - 7
@@ -106,7 +109,7 @@ function calculateFeatures(tokenData) {
   }*/
 
   featureResponse["Background Color"] = backgroundColor;
-  featureResponse["Stroke Color"] = strokeColor;
+  featureResponse["Line Color"] = strokeColor;
   featureResponse["Here Color"] = hslToHex(hereColor,100,50); // 50 l in hsl = 100 b in hsb
 
   here = Math.floor(R.random_num(1,grid*grid+1));
@@ -120,6 +123,21 @@ function calculateFeatures(tokenData) {
     whichSig = R.random_num(0,1);
   }
   featureResponse["Signature"] = signed ? (whichSig > .5 ? "Truedrew" : "Drew Thomas" ) : "None";
+
+  // here color blocks
+  hereColorBlockType1 = R.random_num(0,1);
+  hereColorBlockType2 = R.random_num(0,1);
+  hereColorBlockType3 = R.random_num(0,1);
+
+  var hereColorBlockTypes = [
+    "Bar",
+    "Lines",
+    "Circle",
+    "Grid of circles",
+    "Side Triangle",
+    "Grid of triangles",
+    "Single grid triangle"
+  ];
 
   return featureResponse;
 }

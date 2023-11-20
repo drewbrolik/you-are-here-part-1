@@ -15,7 +15,10 @@ var
   whereAreYou = true,
   R,
   posNeg,
-  whichSig;
+  whichSig,
+  hereColorBlockType1,
+  hereColorBlockType2,
+  hereColorBlockType3;
 
 var jsonInstructions = {}
 jsonInstructions.layers = []
@@ -111,6 +114,11 @@ function setup() {
   }
   //console.log("signed - "+signed);
   
+  // here color blocks
+  hereColorBlockType1 = R.random_num(0,1);
+  hereColorBlockType2 = R.random_num(0,1);
+  hereColorBlockType3 = R.random_num(0,1);
+
   // set up grid
   for (var i = 0; i < grid*grid; i++) {
     gridArray[i] = R.random_num(0,1);
@@ -139,7 +147,7 @@ function setup() {
   this.focus(); // focus so key listener works right away
   
   var hereColorBlockRandom = R.random_num(0,1);
-  if (hereColorBlockRandom > .5) { hereColorBlock(hereColor); }
+  if (hereColorBlockRandom > .5) { hereColorBlock(hereColor,hereColorBlockType1); }
   
 }
 function draw() {
@@ -149,9 +157,9 @@ function draw() {
   
     // final
     var hereColorBlockRandom = R.random_num(0,1);
-    if (hereColorBlockRandom > .5) { hereColorBlock(hereColor); }
+    if (hereColorBlockRandom > .5) { hereColorBlock(hereColor,hereColorBlockType2); }
     hereColorBlockRandom = R.random_num(0,1);
-    if (hereColorBlockRandom > .75) { hereColorBlock(hereColor); }
+    if (hereColorBlockRandom > .75) { hereColorBlock(hereColor,hereColorBlockType3); }
     if (signed) { signWork(); }
     noLoop();
   
@@ -442,18 +450,19 @@ function drawShape(startX,endX,startY,endY,hereCell=false,thisColor,hereColor) {
 }
 
 // here color block
-function hereColorBlock(hereColor) {
+function hereColorBlock(hereColor,hereColorBlockType) {
   noStroke();
   var hereColor = color(hereColor,100,100);
   hereColor.setAlpha(.0625);
   fill(hereColor);
   
-  var hereColorBlockType = R.random_num(0,1);
+  //var hereColorBlockType = R.random_num(0,1);
+  console.log(hereColorBlockType);
   if (hereColorBlockType > .8) { // left side full height
     
     rect(0,0,R.random_num(10,width*.5),height);
   
-  } else if (hereColorBlockType > .55) { // lines
+  } else if (hereColorBlockType > .6) { // lines
     
     var hcbs = R.random_num(0,width*.5);
     var hcbw = R.random_num(width*.25,width*.5);
@@ -463,12 +472,12 @@ function hereColorBlock(hereColor) {
       }
     }
   
-  } else if (hereColorBlockType > .35) { // circle
+  } else if (hereColorBlockType > .4) { // circle
     
     var ellipseSize = R.random_num(120,420);
     ellipse(width*.5,height*.5,width-ellipseSize,height-ellipseSize);
   
-  } else if (hereColorBlockType > .1) { // grid of circles
+  } else if (hereColorBlockType > .2) { // grid of circles
     
     if (R.random_num(0,1) > .9) { fill(0); } // chance for all black dots
 
@@ -491,11 +500,46 @@ function hereColorBlock(hereColor) {
       ellipse(centerCellX,centerCellY,40,40);
     }
   
-  } else { // triangle
+  } else if (hereColorBlockType > .1) { // triangle
 
     beginShape();
     vertex(width,0);
     vertex(width*.5,height*.5);
+    vertex(width,height);
+    endShape();
+
+  } else if (hereColorBlockType > .05) { // triangles grid
+
+    
+    var gridLoopX = 1;
+    var gridLoopY = 0;
+    for (var gridLoop = 0; gridLoop < (grid*grid); gridLoop++) {
+
+      if (gridLoop%grid < 1) {
+        gridLoopY++;
+        gridLoopX = 1;
+      } else {
+        gridLoopX++;
+      }
+      
+      var
+          centerCellX = (width/(grid+1)*gridLoopX),
+          centerCellY = (height/(grid+1)*gridLoopY),
+          cellSize = width/(grid+1);
+
+      beginShape();
+      vertex(centerCellX-(cellSize*.5),centerCellY+(cellSize*.5));
+      vertex(centerCellX+(cellSize*.5),centerCellY-(cellSize*.5));
+      vertex(centerCellX+(cellSize*.5),centerCellY+(cellSize*.5));
+      endShape(); 
+      
+    }
+
+  } else { // single grid-style triangle
+
+    beginShape();
+    vertex(0,height);
+    vertex(width,0);
     vertex(width,height);
     endShape();
 
