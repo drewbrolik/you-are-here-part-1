@@ -477,6 +477,7 @@ function hereColorBlock(hereColor,hereColorBlockType) {
   
   //var hereColorBlockType = R.random_num(0,1);
   console.log(hereColorBlockType);
+
   if (hereColorBlockType > .8) { // left side full height
     
     rect(0,0,R.random_num(10,width*.5),height);
@@ -554,13 +555,31 @@ function hereColorBlock(hereColor,hereColorBlockType) {
       
     }
 
-  } else { // single grid-style triangle
+  } else if (hereColorBlockType > .025) { // single grid-style triangle
 
     beginShape();
     vertex(0,height);
     vertex(width,0);
     vertex(width,height);
     endShape();
+
+  } else if (hereColorBlockType > .0125) { // lines from top
+
+    for (var hcbi = 0; hcbi<width; hcbi++) {
+      rect(hcbi,0,1,R.random_num(0,hcbi));
+    }
+
+  } else { // waves
+
+    var wavesNum = R.random_num(2,8);
+    for (var hcbi = 0; hcbi<wavesNum; hcbi++) {
+      beginShape();
+      vertex(0,height);
+      vertex(width,height);
+      vertex(width,height*(R.random_num(.5,1)));
+      vertex(0,height*(R.random_num(.5,1)));
+      endShape();
+    }
 
   }
   
