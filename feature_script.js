@@ -48,15 +48,15 @@ function calculateFeatures(tokenData) {
   
   // layers
   totalLayers = Math.floor(R.random_num(1,21));
-  featureResponse["Layers"] = totalLayers;
+  featureResponse["Layers"] = totalLayers+"";
   
   // chaos number
   chaosFactor = Math.floor(R.random_num(-6,6));
-  featureResponse["Chaos Factor"] = chaosFactor;
+  featureResponse["Chaos Factor"] = chaosFactor+"";
   
   //styling
   strokeWidth = R.random_num(4,7.5);
-  featureResponse["Line Width"] = Math.round(strokeWidth);
+  featureResponse["Line Width"] = Math.round(strokeWidth)+"";
   
   // colorway
   var colorway = Math.floor(R.random_num(1,8)); // 1 - 7
