@@ -143,6 +143,13 @@ function setup() {
   
   // background
   background(backgroundColor);
+  // GOLD //
+  /*
+  strokeColor = "hsb(50,96%,71%)";
+
+  drawRainbowGradient(width,height);
+  */
+  // END GOLD
   
   this.focus(); // focus so key listener works right away
   
@@ -150,6 +157,18 @@ function setup() {
   if (hereColorBlockRandom > .5) { hereColorBlock(hereColor,hereColorBlockType1); }
   
 }
+
+// RAINBOW
+/*function drawRainbowGradient(w, h) {
+  for (let y = 0; y < h; y++) {
+    // Map the current x position to a hue value between 0 and 360
+    //const hueValue = map(x, 0, w, 0, 360);
+    stroke(y/2%360, 100, 100);
+    line(0, y, w, y);
+  }
+}*/
+// END RAINBOW
+
 function draw() {
   
   // loop or stop
