@@ -140,6 +140,20 @@ function setup() {
     {"x":shapePoint5x,"y":shapePoint5y},
     {"x":1,"y":1}
   ]
+
+  jsonInstructions.NWSEline = [
+    {"x":0,"y":0},
+    {"x":1,"y":1}
+  ]
+
+  jsonInstructions.SWNEline = [
+    {"x":0,"y":1},
+    {"x":1,"y":0}
+  ]
+
+  jsonInstructions.circle = [
+    {"x":.5,"y":.5,"r":.6}
+  ]
   
   // background
   background(backgroundColor);
@@ -293,6 +307,8 @@ function drawLayer() {
       whereAreYou = false;
       forcePrint = true;
       hereCell = true;
+
+      columnInstructions.here = true;
     }
     
     var printThisLayer = R.random_num(0,1);
