@@ -25,13 +25,13 @@ function calculateFeatures(tokenData) {
   var featureResponse = {}
 
   var
-    grid = 3,
+    grid,
     currentLayer = 1,
-    totalLayers = 10,
-    chaosFactor = 0,
-    strokeWidth = 4,
-    backgroundColor = 90,
-    hereColor = 300,
+    totalLayers,
+    chaosFactor,
+    strokeWidth,
+    backgroundColor,
+    hereColor,
     signed = false,
     strokeColor,
     here,
@@ -60,44 +60,52 @@ function calculateFeatures(tokenData) {
   
   // colorway
   var colorway = Math.floor(R.random_num(1,8)); // 1 - 7
+  var hereHueRange;
   if (colorway == 1) { // white
     backgroundColor = "White";// "rgba(248,248,248,1)";
     strokeColor = "Black";
     hereColor = R.random_num(300,380);
     if (hereColor > 360) { hereColor -= 360; }
+    hereHueRange = "Pink/Red/Orange";
   } else if (colorway == 2) { // blue
     //backgroundColor = "HSB(230,50%,100%)";
     backgroundColor = "Blue";// "HSB(220,55%,84%)";
     strokeColor = "White";
     //hereColor = R.random_num(300,380);
     hereColor = R.random_num(0,43);
+    hereHueRange = "Red/Orange/Yellow";
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 3) { // orange
     //backgroundColor = "HSB(32,50%,100%)";
     backgroundColor = "Orange"; // "HSB(32,62%,100%)";
     strokeColor = "White";
     hereColor = R.random_num(180,280);
+    hereHueRange = "Teal/Blue/Purple";
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 4) { // green
     backgroundColor = "Green"; // "HSB(140,30%,85%)";
     strokeColor = "White";
     hereColor = R.random_num(0,54);
+    hereHueRange = "Red/Orange/Yellow";
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 5) { // white with blue/purple
     backgroundColor = "White"; // "rgba(248,248,248,1)";
     strokeColor = "Black";
     hereColor = R.random_num(180,280);
     if (hereColor > 360) { hereColor -= 360; }
+    hereHueRange = "Teal/Blue/Purple";
   } else if (colorway == 6) { // black
     backgroundColor = "Dark gray"; // "HSB(0,0%,13%)";
     strokeColor = "White";
     hereColor = R.random_num(155,245);
+    hereHueRange = "Green/Teal/Blue";
     if (hereColor > 360) { hereColor -= 360; }
   } else if (colorway == 7) { // yellow
     backgroundColor = "Yellow"; // "HSB(50,46%,100%)";
     strokeColor = "Black";
     hereColor = R.random_num(194,342);
     if (hereColor > 360) { hereColor -= 360; }
+    hereHueRange = "Teal/Crimson";
   }
 
   // invert
@@ -111,6 +119,7 @@ function calculateFeatures(tokenData) {
   featureResponse["Background Color"] = backgroundColor;
   featureResponse["Line Color"] = strokeColor;
   featureResponse["Here Color"] = hslToHex(hereColor,100,50); // 50 l in hsl = 100 b in hsb
+  featureResponse["Possible Here Hue Range"] = hereHueRange;
 
   here = Math.floor(R.random_num(1,grid*grid+1));
   posNeg = R.random_num(-1,1);
