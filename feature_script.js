@@ -10,7 +10,7 @@
  */
 function calculateFeatures(tokenData) {
   const hash = tokenData.hash;
-  const invocation = Number(tokenData.tokenId) % 1_000_000;
+  //const invocation = Number(tokenData.tokenId) % 1_000_000;
 
   /**
    * Implement me. This function should return a set of features in the format of key-value pair notation.
@@ -26,7 +26,7 @@ function calculateFeatures(tokenData) {
 
   var
     grid,
-    currentLayer = 1,
+    //currentLayer = 1,
     totalLayers,
     chaosFactor,
     strokeWidth,
@@ -34,14 +34,14 @@ function calculateFeatures(tokenData) {
     hereColor,
     signed = false,
     strokeColor,
-    here,
-    hereSegment,
+    //here,
+    //hereSegment,
     posNeg,
     whichSig,
-    R = new Random(),
-    hereColorBlockType1,
-    hereColorBlockType2,
-    hereColorBlockType3;
+    R = new Random();//,
+    //hereColorBlockType1,
+    //hereColorBlockType2,
+    //hereColorBlockType3;
 
   // number of grid cells
   grid = Math.floor(R.random_num(3,11));
