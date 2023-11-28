@@ -126,10 +126,11 @@ function calculateFeatures(tokenData) {
   posNeg = R.random_num(-1,1);
   hereSegment = Math.floor(R.random_num(1,7));
 
-  featureResponse["Here Color Deviation"] = ((chaosFactor*posNeg)/(360)*100).toFixed(2)+"%";
+  var hereColorDev = ((chaosFactor*posNeg)/(360)*100).toFixed(2)+"%";
+  featureResponse["Here Color Deviation"] = hereColorDev;
 
   // signature
-  if (R.random_num(0,1) > .7) {
+  if (R.random_num(0,1) > .9) {
     signed = true;
     whichSig = R.random_num(0,1);
   }

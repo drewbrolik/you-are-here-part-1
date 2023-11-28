@@ -95,14 +95,6 @@ function setup() {
   //console.log("backgroundColor - "+backgroundColor);
   //console.log("strokeColor - "+strokeColor);
   //console.log("hereColor target hue - "+hereColor);
-  
-  // invert
-  /*var invert = R.random_num(1,100);
-  if (invert > 50) {
-    var backgroundColor_temp = backgroundColor;
-    backgroundColor = strokeColor;
-    strokeColor = backgroundColor_temp;
-  }*/
 
   // here cell
   here = Math.floor(R.random_num(1,grid*grid+1));
@@ -110,7 +102,7 @@ function setup() {
   hereSegment = Math.floor(R.random_num(1,7));
 
   // signature
-  if (R.random_num(0,1) > .7) {
+  if (R.random_num(0,1) > .9) {
     signed = true;
     whichSig = R.random_num(0,1);
   }
@@ -207,16 +199,6 @@ function draw() {
 }
 
 function keyTyped() {
-
-  /*if (key === 'r') {
-    drawLayer();
-  }
-
-  if (key === 't') {
-    for(var i = 0; i < 10; i++) {
-      drawLayer();
-    }
-  }*/
   
   if (key === 'i') {
     saveJSON(jsonInstructions, 'instructions.json');
@@ -248,7 +230,6 @@ function drawLayer() {
   var layerInstructions = {}
   layerInstructions.layer = currentLayer;
   layerInstructions.alpha = thisAlpha;
-  //layerInstructions.strokeWidth = strokeWidth;
   layerInstructions.offsetX = offsetX;
   layerInstructions.offsetY = offsetY;
   layerInstructions.rows = [];
@@ -330,19 +311,13 @@ function drawLayer() {
           cellSize = width/(grid+1);
   
         if (hereCell) {
-          //noStroke();
-          //fill(hereColorColor);
           if (gridArray[gridLoop] > .625) {
             line(centerCellX,centerCellY,centerCellX+(cellSize/2),centerCellY+(cellSize/2));
-            //ellipse((width/(grid+1)*gridLoopX)+offsetX+(strokeWidth*2),(height/(grid+1)*gridLoopY-(strokeWidth*2))+offsetY,10,10);
             columnInstructions.type = "NW - SE line";
           } else {
-            //ellipse((width/(grid+1)*gridLoopX)+offsetX-(strokeWidth*2),(height/(grid+1)*gridLoopY-(strokeWidth*2))+offsetY,10,10);
             line(centerCellX,centerCellY,centerCellX-(cellSize/2),centerCellY+(cellSize/2));
             columnInstructions.type = "SW - NE line";
           }
-          //stroke(hereColorColor);
-          //noFill();
         } else {
           if (gridArray[gridLoop] > .625) {
 
@@ -357,7 +332,7 @@ function drawLayer() {
                 && (gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "NW - SE line")
               ))
             ) {
-              // don't draw line (could produce unwanted shape)
+              // don't draw NW - SE line
               line(centerCellX+(cellSize/2),centerCellY-(cellSize/2),centerCellX-(cellSize/2),centerCellY+(cellSize/2));
               columnInstructions.type = "SW - NE line";
             } else {
