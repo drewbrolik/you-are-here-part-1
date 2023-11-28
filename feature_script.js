@@ -35,6 +35,7 @@ function calculateFeatures(tokenData) {
     signed = false,
     strokeColor,
     here,
+    hereSegment,
     posNeg,
     whichSig,
     R = new Random(),
@@ -123,6 +124,7 @@ function calculateFeatures(tokenData) {
 
   here = Math.floor(R.random_num(1,grid*grid+1));
   posNeg = R.random_num(-1,1);
+  hereSegment = Math.floor(R.random_num(1,7));
 
   featureResponse["Here Color Deviation"] = ((chaosFactor*posNeg)/(360)*100).toFixed(2)+"%";
 

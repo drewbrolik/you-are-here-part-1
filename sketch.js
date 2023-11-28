@@ -12,6 +12,7 @@ var
   currentLayer = 1,
   gridArray = [],
   here,
+  hereSegment,
   whereAreYou = true,
   R,
   posNeg,
@@ -106,6 +107,7 @@ function setup() {
   // here cell
   here = Math.floor(R.random_num(1,grid*grid+1));
   posNeg = R.random_num(-1,1);
+  hereSegment = Math.floor(R.random_num(1,7));
 
   // signature
   if (R.random_num(0,1) > .7) {
@@ -152,7 +154,7 @@ function setup() {
   ]
 
   jsonInstructions.circle = [
-    {"x":.5,"y":.5,"r":.6}
+    {"x":.5,"y":.5,"d":.6}
   ]
   
   // background
@@ -355,10 +357,9 @@ function drawLayer() {
                 && (gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "NW - SE line")
               ))
             ) {
-              // don't draw line
+              // don't draw line (could produce unwanted shape)
               line(centerCellX+(cellSize/2),centerCellY-(cellSize/2),centerCellX-(cellSize/2),centerCellY+(cellSize/2));
               columnInstructions.type = "SW - NE line";
-              console.log("don't draw, auto-prevented... row "+gridLoopY+", column "+gridLoopX);
             } else {
               line(centerCellX-(cellSize/2),centerCellY-(cellSize/2),centerCellX+(cellSize/2),centerCellY+(cellSize/2));
               columnInstructions.type = "NW - SE line";
@@ -385,6 +386,7 @@ function drawLayer() {
         drawShape(cellStartX,cellEndX,cellStartY,cellEndY,hereCell,thisColor,hereColorColor);
 
         columnInstructions.type = "Shape";
+        if (columnInstructions.here) { columnInstructions.hereSegment = hereSegment; }
 
       }
       strokeWeight(strokeWidth);
@@ -452,7 +454,9 @@ function drawShape(startX,endX,startY,endY,hereCell=false,thisColor,hereColor) {
     shapePoint5xx_inverted = startX+shapePoint5y*(endX-startX),
     shapePoint5yy_inverted = startY+shapePoint5x*(endY-startY);
 
-  if (hereCell) { var colorLine = Math.floor(R.random_num(1,7)); }
+  if (hereCell) {
+    var colorLine = hereSegment;
+  }
   var inverted = R.random_num(0,1);
   if (inverted > .1) {
     if (hereCell && colorLine === 1) { stroke(hereColor);strokeWeight(strokeWidth*2);strokeCap(SQUARE); } else { stroke(thisColor);strokeWeight(strokeWidth);strokeCap(ROUND); }
@@ -490,9 +494,6 @@ function hereColorBlock(hereColor,hereColorBlockType) {
   var hereColor = color(hereColor,100,100);
   hereColor.setAlpha(.0625);
   fill(hereColor);
-  
-  //var hereColorBlockType = R.random_num(0,1);
-  console.log(hereColorBlockType);
 
   if (hereColorBlockType > .8) { // left side full height
     
