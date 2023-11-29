@@ -24,35 +24,29 @@ var
 var jsonInstructions = {}
 jsonInstructions.layers = []
 
+// seed
+const hash = tokenData.hash;
+const invocation = Number(tokenData.tokenId) % 1_000_000;
+
 function setup() {
   createCanvas(1000,1000);
   pixelDensity(2);
   colorMode(HSB, 360, 100, 100);
   
-  // seed
-  const hash = tokenData.hash;
-  const invocation = Number(tokenData.tokenId) % 1_000_000;
-  
   R = new Random();
-  
-  // set traits
-  
+    
   // number of grid cells
   grid = Math.floor(R.random_num(3,11));
-  //console.log("grid - "+grid);
   
   // layers
   totalLayers = Math.floor(R.random_num(1,21));
-  //console.log("totalLayers - "+totalLayers);
   
   // chaos number
   chaosFactor = Math.floor(R.random_num(-6,6));
-  //console.log("chaosFactor - "+chaosFactor);
   
   //styling
   strokeWidth = R.random_num(4,7.5);
   jsonInstructions.strokeWidth = strokeWidth;
-  //console.log("strokeWidth - "+strokeWidth);
   
   // colorway
   var colorway = floor(R.random_num(1,8)); // 1 - 7
@@ -92,9 +86,6 @@ function setup() {
     hereColor = R.random_num(194,342);
     if (hereColor > 360) { hereColor -= 360; }
   }
-  //console.log("backgroundColor - "+backgroundColor);
-  //console.log("strokeColor - "+strokeColor);
-  //console.log("hereColor target hue - "+hereColor);
 
   // here cell
   here = Math.floor(R.random_num(1,grid*grid+1));
@@ -106,7 +97,6 @@ function setup() {
     signed = true;
     whichSig = R.random_num(0,1);
   }
-  //console.log("signed - "+signed);
   
   // here color blocks
   hereColorBlockType1 = R.random_num(0,1);
@@ -276,11 +266,7 @@ function drawLayer() {
     var hereCell = false;
     if (gridLoop+1 === here && currentLayer == totalLayers && whereAreYou) {
 
-      hereColor += (chaosFactor*posNeg); // this changes value from trait, based on chaos factor...
-
-      // trait
-      //console.log("hereColor actual hue - "+hereColor);
-      //console.log("hereColor deviation - "+((chaosFactor*posNeg)/(360)*100));
+      hereColor += (chaosFactor*posNeg);
 
       var hereColorColor = color(hereColor,100,100);
       hereColorColor.setAlpha(1);
@@ -321,7 +307,7 @@ function drawLayer() {
         } else {
           if (gridArray[gridLoop] > .625) {
 
-            // prevent +
+            // prevent x shape in final output
             if (currentLayer == 1 && (
                 (gridLoopX > 1 && rowInstructions.columns[(gridLoopX - 1)-1].type == "SW - NE line")
                 && (gridLoopY > 1 && layerInstructions.rows[(gridLoopY - 1)-1].columns[gridLoopX - 1].type == "SW - NE line")
@@ -372,6 +358,7 @@ function drawLayer() {
     strokeCap(ROUND);
     
     // splatter
+    noiseSeed(invocation);
     if (R.random_num(0,1) > .96) {
       for(var i=0;i<2000;i++) {
         noStroke();
