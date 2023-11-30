@@ -33,6 +33,12 @@ function setup() {
   pixelDensity(2);
   colorMode(HSB, 360, 100, 100);
   
+  // resize canvas element in html
+  var canvasElement = document.querySelector("canvas");
+  canvasElement.style.cssText = '';
+  canvasElement.style.width = "auto";
+  canvasElement.style.height = "100%";
+
   R = new Random();
     
   // number of grid cells
@@ -141,13 +147,17 @@ function setup() {
   
   // background
   background(backgroundColor);
-  // GOLD //
+
+  // match background color in body element of html
+  var backgroundColor_hex = backgroundColor.replace("HSB(","").replace(")","").replaceAll("%","").split(",");
+  canvasElement.parentElement.style.backgroundColor = backgroundColor.indexOf("rgb") > -1 ? backgroundColor : hsbToHex(backgroundColor_hex[0],backgroundColor_hex[1],backgroundColor_hex[2]);
+
+  // RAINBOW/GOLD //
   /*
   strokeColor = "hsb(50,96%,71%)";
-
   drawRainbowGradient(width,height);
   */
-  // END GOLD
+  // END RAINBOW/GOLD
   
   this.focus(); // focus so key listener works right away
   
@@ -174,9 +184,9 @@ function draw() {
   
     // final
     var hereColorBlockRandom = R.random_num(0,1);
-    if (hereColorBlockRandom > .5) { hereColorBlock(hereColor,hereColorBlockType2); }
+    if (hereColorBlockRandom > .5) { hereColorBlock(hereColor,hereColorBlockType2,true); }
     hereColorBlockRandom = R.random_num(0,1);
-    if (hereColorBlockRandom > .75) { hereColorBlock(hereColor,hereColorBlockType3); }
+    if (hereColorBlockRandom > .75) { hereColorBlock(hereColor,hereColorBlockType3,true); }
     if (signed) { signWork(); }
     noLoop();
   
@@ -451,7 +461,7 @@ function drawShape(startX,endX,startY,endY,hereCell=false,thisColor,hereColor) {
 }
 
 // here color block
-function hereColorBlock(hereColor,hereColorBlockType) {
+function hereColorBlock(hereColor,hereColorBlockType,onTop=false) {
   noStroke();
   var hereColor = color(hereColor,100,100);
   hereColor.setAlpha(.0625);
@@ -478,7 +488,7 @@ function hereColorBlock(hereColor,hereColorBlockType) {
   
   } else if (hereColorBlockType > .2) { // grid of circles
     
-    if (R.random_num(0,1) > .9) { fill(0); } // chance for all black dots
+    if (R.random_num(0,1) > .9 && !onTop) { fill(0); } // chance for all black dots
 
     var gridLoopX = 1;
     var gridLoopY = 0;
@@ -713,4 +723,18 @@ class Random {
   random_choice(list) {
     return list[this.random_int(0, list.length - 1)];
   }
+}
+
+function hsbToHex(h, s, b) {
+    s /= 100;
+    b /= 100;
+
+    let k = (n) => (n + h / 60) % 6;
+    let f = (n) => b - b * s * Math.max(Math.min(k(n), 4 - k(n), 1), 0);
+
+    let r = Math.round(f(5) * 255);
+    let g = Math.round(f(3) * 255);
+    let bb = Math.round(f(1) * 255);
+
+    return "#" + [r, g, bb].map(x => x.toString(16).padStart(2, '0')).join('');
 }
