@@ -99,7 +99,7 @@ function setup() {
   hereSegment = Math.floor(R.random_num(1,7));
 
   // signature
-  if (R.random_num(0,1) > .9) {
+  if (R.random_num(0,1) > .96) {
     signed = true;
     whichSig = R.random_num(0,1);
   }
@@ -205,7 +205,7 @@ function keyTyped() {
   }
   
   if (key === 's') {
-    save('you-are-here.png');
+    save('you-are-here-'+invocation+'.png');
   }
   
 }
