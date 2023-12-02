@@ -30,14 +30,19 @@ const invocation = Number(tokenData.tokenId) % 1_000_000;
 
 function setup() {
   createCanvas(1000,1000);
-  pixelDensity(2);
+  pixelDensity(2.5);
   colorMode(HSB, 360, 100, 100);
   
   // resize canvas element in html
   var canvasElement = document.querySelector("canvas");
   canvasElement.style.cssText = '';
-  canvasElement.style.width = "auto";
-  canvasElement.style.height = "100%";
+  if (canvasElement.parentElement.offsetWidth >= canvasElement.parentElement.offsetHeight) {
+    canvasElement.style.width = "auto";
+    canvasElement.style.height = "100%";
+  } else {
+    canvasElement.style.width = "100%";
+    canvasElement.style.height = "auto";
+  }
 
   R = new Random();
     
