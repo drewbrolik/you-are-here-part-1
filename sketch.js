@@ -126,7 +126,9 @@ function setup() {
   shapePoint4x = R.random_num(0,1),shapePoint4y = R.random_num(0,1),
   shapePoint5x = R.random_num(0,1),shapePoint5y = R.random_num(0,1);
   
-  jsonInstructions.shape = [
+  jsonInstructions.definitions = {};
+
+  jsonInstructions.definitions.shape = [
     {"x":0,"y":0},
     {"x":shapePoint1x,"y":shapePoint1y},
     {"x":shapePoint2x,"y":shapePoint2y},
@@ -136,17 +138,27 @@ function setup() {
     {"x":1,"y":1}
   ]
 
-  jsonInstructions.NWSEline = [
+  jsonInstructions.definitions.NWSEline = [
     {"x":0,"y":0},
     {"x":1,"y":1}
   ]
 
-  jsonInstructions.SWNEline = [
+  jsonInstructions.definitions.NWSEline_here = [
+    {"x":.5,"y":.5},
+    {"x":1,"y":1}
+  ]
+
+  jsonInstructions.definitions.SWNEline = [
     {"x":0,"y":1},
     {"x":1,"y":0}
   ]
 
-  jsonInstructions.circle = [
+  jsonInstructions.definitions.SWNEline_here = [
+    {"x":0,"y":1},
+    {"x":.5,"y":.5}
+  ]
+
+  jsonInstructions.definitions.circle = [
     {"x":.5,"y":.5,"d":.6}
   ]
   
@@ -206,7 +218,7 @@ function draw() {
 function keyTyped() {
   
   if (key === 'i') {
-    saveJSON(jsonInstructions, 'instructions.json');
+    saveJSON(jsonInstructions, 'instructions-'+invocation+'.json');
   }
   
   if (key === 's') {
@@ -360,11 +372,31 @@ function drawLayer() {
           cellEndX = centerCellX+(cellSize*.5),
           cellStartY = centerCellY-(cellSize*.5),
           cellEndY = centerCellY+(cellSize*.5);
-                
-        drawShape(cellStartX,cellEndX,cellStartY,cellEndY,hereCell,thisColor,hereColorColor);
 
-        columnInstructions.type = "Shape";
-        if (columnInstructions.here) { columnInstructions.hereSegment = hereSegment; }
+        if (currentLayer == 1 && (
+            (gridLoopX > 1 && rowInstructions.columns[(gridLoopX - 1)-1].type == "SW - NE line")
+            && (gridLoopY > 1 && layerInstructions.rows[(gridLoopY - 1)-1].columns[gridLoopX - 1].type == "SW - NE line")
+            && ((gridLoopY > 1 && layerInstructions.rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "NW - SE line")
+              || (gridLoopY > 1 && layerInstructions.rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "Shape"))
+          ) || (currentLayer > 1 && (
+            (gridLoopX > 1 && jsonInstructions.layers[0].rows[gridLoopY - 1].columns[(gridLoopX - 1)-1].type == "SW - NE line")
+            && (gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[gridLoopX - 1].type == "SW - NE line")
+            && ((gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "NW - SE line")
+              || (gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "Shape"))
+          ))
+        ) {
+          // don't draw shape
+          if (hereCell) {
+            line(centerCellX,centerCellY,centerCellX-(cellSize/2),centerCellY+(cellSize/2));
+          } else {
+            line(centerCellX+(cellSize/2),centerCellY-(cellSize/2),centerCellX-(cellSize/2),centerCellY+(cellSize/2));
+          }
+          columnInstructions.type = "SW - NE line";
+        } else {        
+          drawShape(cellStartX,cellEndX,cellStartY,cellEndY,hereCell,thisColor,hereColorColor);
+          columnInstructions.type = "Shape";
+          if (columnInstructions.here) { columnInstructions.hereSegment = hereSegment; }
+        }
 
       }
       strokeWeight(strokeWidth);
