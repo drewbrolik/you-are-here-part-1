@@ -326,11 +326,13 @@ function drawLayer() {
             if (currentLayer == 1 && (
                 (gridLoopX > 1 && rowInstructions.columns[(gridLoopX - 1)-1].type == "SW - NE line")
                 && (gridLoopY > 1 && layerInstructions.rows[(gridLoopY - 1)-1].columns[gridLoopX - 1].type == "SW - NE line")
-                && (gridLoopY > 1 && layerInstructions.rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "NW - SE line")
+                && ((gridLoopY > 1 && layerInstructions.rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "NW - SE line")
+                  || (gridLoopY > 1 && layerInstructions.rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "Shape"))
               ) || (currentLayer > 1 && (
                 (gridLoopX > 1 && jsonInstructions.layers[0].rows[gridLoopY - 1].columns[(gridLoopX - 1)-1].type == "SW - NE line")
                 && (gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[gridLoopX - 1].type == "SW - NE line")
-                && (gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "NW - SE line")
+                && ((gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "NW - SE line")
+                  || (gridLoopY > 1 && jsonInstructions.layers[0].rows[(gridLoopY - 1)-1].columns[(gridLoopX - 1)-1].type == "Shape"))
               ))
             ) {
               // don't draw NW - SE line
