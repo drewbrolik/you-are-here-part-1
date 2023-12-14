@@ -158,7 +158,7 @@ function calculateFeatures(tokenData) {
   featureResponse["Here Color Deviation"] = hereColorDev;
 
   // signature
-  if (R.random_num(0,1) > .9) {
+  if (R.random_num(0,1) > .96) {
     signed = true;
     whichSig = R.random_num(0,1);
   }
